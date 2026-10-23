@@ -17,6 +17,7 @@ field size: Ref
 method emptyList() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), List())
   ensures acc(ret_1.size, write)
+  ensures isSubtype(typeOf(ret_1.size), intType())
   ensures intFromRef(ret_1.size) >= 0
   ensures intFromRef(ret_1.size) == 0
 
@@ -24,8 +25,10 @@ method emptyList() returns (ret_1: Ref)
 method initialization(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
   requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
   requires intFromRef(l.size) >= 0
   ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -43,9 +46,11 @@ field size: Ref
 method add(this: Ref, element: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), MutableList())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(element), intType())
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
   ensures intFromRef(this.size) == old(intFromRef(this.size)) + 1
@@ -54,8 +59,10 @@ method add(this: Ref, element: Ref) returns (ret_1: Ref)
 method add_get(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), MutableList())
   requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
   requires intFromRef(l.size) >= 0
   ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -70,11 +77,13 @@ method add_get(l: Ref) returns (v_ret_0: Ref)
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), MutableList())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -86,11 +95,13 @@ field p_size: Ref
 method get(this: Ref, index: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
+  requires isSubtype(typeOf(this.p_size), intType())
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
   ensures acc(this.p_size, write)
+  ensures isSubtype(typeOf(this.p_size), intType())
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), intType())
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
@@ -99,14 +110,15 @@ method get(this: Ref, index: Ref) returns (ret_1: Ref)
 method last_or_null(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
   requires acc(l.p_size, write)
+  requires isSubtype(typeOf(l.p_size), intType())
   requires intFromRef(l.p_size) >= 0
   ensures acc(l.p_size, write)
+  ensures isSubtype(typeOf(l.p_size), intType())
   ensures intFromRef(l.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), nullable(intType()))
 {
   var l0_size: Ref
   l0_size := l.p_size
-  inhale isSubtype(typeOf(l0_size), intType())
   if (!(intFromRef(l0_size) == 0)) {
     var anon: Ref
     anon := get(l, minusInts(l0_size, intToRef(1)))
@@ -125,11 +137,13 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -138,8 +152,10 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 method isEmpty(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -150,8 +166,10 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 method is_empty(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
   requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
   requires intFromRef(l.size) >= 0
   ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
@@ -171,11 +189,13 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -184,8 +204,10 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 method isEmpty(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -196,8 +218,10 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 method nullable_list(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), nullable(List()))
   requires l != nullValue() ==> acc(l.size, write)
+  requires l != nullValue() ==> isSubtype(typeOf(l.size), intType())
   requires l != nullValue() ==> intFromRef(l.size) >= 0
   ensures l != nullValue() ==> acc(l.size, write)
+  ensures l != nullValue() ==> isSubtype(typeOf(l.size), intType())
   ensures l != nullValue() ==> intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
@@ -210,10 +234,7 @@ method nullable_list(l: Ref) returns (v_ret_0: Ref)
     anon_0 := boolToRef(false)}
   if (boolFromRef(anon_0)) {
     var x: Ref
-    var anon_2: Ref
-    anon_2 := l.size
-    inhale isSubtype(typeOf(anon_2), intType())
-    x := get(l, minusInts(anon_2, intToRef(1)))
+    x := get(l, minusInts(l.size, intToRef(1)))
   }
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())

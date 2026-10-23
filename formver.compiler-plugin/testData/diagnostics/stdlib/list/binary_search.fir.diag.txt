@@ -4,11 +4,13 @@ field p_size: Ref
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
+  requires isSubtype(typeOf(this.p_size), intType())
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.p_size) > intFromRef(index)
   ensures acc(this.p_size, write)
+  ensures isSubtype(typeOf(this.p_size), intType())
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
@@ -17,8 +19,10 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 method isEmpty(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
+  requires isSubtype(typeOf(this.p_size), intType())
   requires intFromRef(this.p_size) >= 0
   ensures acc(this.p_size, write)
+  ensures isSubtype(typeOf(this.p_size), intType())
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_1), boolType())
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
@@ -29,40 +33,38 @@ method isEmpty(this: Ref) returns (ret_1: Ref)
 method safe_binary_search(arr: Ref, target: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(arr), List())
   requires acc(arr.p_size, write)
+  requires isSubtype(typeOf(arr.p_size), intType())
   requires intFromRef(arr.p_size) >= 0
   requires isSubtype(typeOf(target), intType())
   ensures acc(arr.p_size, write)
+  ensures isSubtype(typeOf(arr.p_size), intType())
   ensures intFromRef(arr.p_size) >= 0
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var l0_size: Ref
   var mid: Ref
   var anon_0: Ref
-  var anon_1: Ref
   l0_size := arr.p_size
-  inhale isSubtype(typeOf(l0_size), intType())
-  anon_0 := arr.p_size
-  inhale isSubtype(typeOf(anon_0), intType())
-  mid := divInts(anon_0, intToRef(2))
-  anon_1 := isEmpty(arr)
-  if (boolFromRef(anon_1)) {
+  mid := divInts(arr.p_size, intToRef(2))
+  anon_0 := isEmpty(arr)
+  if (boolFromRef(anon_0)) {
     v_ret_0 := boolToRef(false)
   } else {
-    var anon_2: Ref
-    anon_2 := get(arr, mid)
-    if (intFromRef(anon_2) == intFromRef(target)) {
+    var anon_1: Ref
+    anon_1 := get(arr, mid)
+    if (intFromRef(anon_1) == intFromRef(target)) {
       v_ret_0 := boolToRef(true)
     } else {
-      var anon_3: Ref
-      anon_3 := get(arr, mid)
-      if (intFromRef(anon_3) < intFromRef(target)) {
-        var anon_4: Ref
-        anon_4 := subList(arr, plusInts(mid, intToRef(1)), l0_size)
-        v_ret_0 := safe_binary_search(anon_4, target)
+      var anon_2: Ref
+      anon_2 := get(arr, mid)
+      if (intFromRef(anon_2) < intFromRef(target)) {
+        var anon_3: Ref
+        anon_3 := subList(arr, plusInts(mid, intToRef(1)), l0_size)
+        v_ret_0 := safe_binary_search(anon_3, target)
       } else {
-        var anon_5: Ref
-        anon_5 := subList(arr, intToRef(0), mid)
-        v_ret_0 := safe_binary_search(anon_5, target)
+        var anon_4: Ref
+        anon_4 := subList(arr, intToRef(0), mid)
+        v_ret_0 := safe_binary_search(anon_4, target)
       }
     }
   }
@@ -74,6 +76,7 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   returns (ret_3: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.p_size, write)
+  requires isSubtype(typeOf(this.p_size), intType())
   requires intFromRef(this.p_size) >= 0
   requires isSubtype(typeOf(fromIndex), intType())
   requires isSubtype(typeOf(toIndex), intType())
@@ -81,9 +84,11 @@ method subList(this: Ref, fromIndex: Ref, toIndex: Ref)
   requires intFromRef(fromIndex) >= 0
   requires intFromRef(toIndex) <= intFromRef(this.p_size)
   ensures acc(this.p_size, write)
+  ensures isSubtype(typeOf(this.p_size), intType())
   ensures intFromRef(this.p_size) >= 0
   ensures isSubtype(typeOf(ret_3), List())
   ensures acc(ret_3.p_size, write)
+  ensures isSubtype(typeOf(ret_3.p_size), intType())
   ensures intFromRef(ret_3.p_size) >= 0
   ensures intFromRef(this.p_size) == old(intFromRef(this.p_size))
   ensures intFromRef(ret_3.p_size) ==
@@ -96,11 +101,13 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_1), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -110,18 +117,20 @@ method unsafe_binary_search_fixed(arr: Ref, target: Ref, left: Ref, right: Ref)
   returns (v_ret_0: Ref)
   requires isSubtype(typeOf(arr), List())
   requires acc(arr.size, write)
+  requires isSubtype(typeOf(arr.size), intType())
   requires intFromRef(arr.size) >= 0
   requires isSubtype(typeOf(target), intType())
   requires isSubtype(typeOf(left), intType())
   requires isSubtype(typeOf(right), intType())
   ensures acc(arr.size, write)
+  ensures isSubtype(typeOf(arr.size), intType())
   ensures intFromRef(arr.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), boolType())
 {
   var anon_0: Ref
   var anon_1: Ref
   var mid: Ref
-  var anon_3: Ref
+  var anon_2: Ref
   if (intFromRef(left) > intFromRef(right)) {
     anon_1 := boolToRef(true)
   } else {
@@ -129,23 +138,19 @@ method unsafe_binary_search_fixed(arr: Ref, target: Ref, left: Ref, right: Ref)
   if (boolFromRef(anon_1)) {
     anon_0 := boolToRef(true)
   } else {
-    var anon_2: Ref
-    anon_2 := arr.size
-    inhale isSubtype(typeOf(anon_2), intType())
-    anon_0 := geInts(right, anon_2)
-  }
+    anon_0 := geInts(right, arr.size)}
   if (boolFromRef(anon_0)) {
     v_ret_0 := boolToRef(false)
     goto lbl_ret_0
   }
   mid := plusInts(left, divInts(minusInts(right, left), intToRef(2)))
-  anon_3 := get(arr, mid)
-  if (intFromRef(anon_3) == intFromRef(target)) {
+  anon_2 := get(arr, mid)
+  if (intFromRef(anon_2) == intFromRef(target)) {
     v_ret_0 := boolToRef(true)
   } else {
-    var anon_4: Ref
-    anon_4 := get(arr, mid)
-    if (intFromRef(anon_4) < intFromRef(target)) {
+    var anon_3: Ref
+    anon_3 := get(arr, mid)
+    if (intFromRef(anon_3) < intFromRef(target)) {
       v_ret_0 := unsafe_binary_search_fixed(arr, target, plusInts(mid, intToRef(1)),
         right)
     } else {

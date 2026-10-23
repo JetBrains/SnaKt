@@ -106,8 +106,10 @@ predicate MutableList_unique(this: Ref) {
 method listHierarchy(xs: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(xs), MutableList())
   requires acc(xs.size, write)
+  requires isSubtype(typeOf(xs.size), intType())
   requires intFromRef(xs.size) >= 0
   ensures acc(xs.size, write)
+  ensures isSubtype(typeOf(xs.size), intType())
   ensures intFromRef(xs.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
