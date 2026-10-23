@@ -691,6 +691,7 @@ function size(v_this: Ref): Ref
 method con() returns (ret_1: Ref)
   ensures isSubtype(typeOf(ret_1), CustomClass())
   ensures acc(CustomClass_unique(ret_1), write)
+  ensures intFromRef(member(ret_1)) == 42
 
 
 method extensionRun(v_this_extension: Ref, block: Ref) returns (ret_6: Ref)

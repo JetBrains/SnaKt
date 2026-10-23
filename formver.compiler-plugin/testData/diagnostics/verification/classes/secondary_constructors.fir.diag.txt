@@ -8,12 +8,14 @@ method con_c_NoPrimaryConstructor_args_Boolean(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret_1), c_NoPrimaryConstructor())
   ensures acc(c_NoPrimaryConstructor_unique(ret_1), write)
+  ensures intFromRef(a(ret_1)) == 0
 
 
 method con_c_NoPrimaryConstructor_args_Int(n: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(n), intType())
   ensures isSubtype(typeOf(ret_2), c_NoPrimaryConstructor())
   ensures acc(c_NoPrimaryConstructor_unique(ret_2), write)
+  ensures intFromRef(a(ret_2)) == intFromRef(n)
 
 
 method onlySecondConstructors() returns (v_ret_0: Ref)
@@ -37,6 +39,7 @@ method con_c_BothConstructors_args_Boolean(b: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(b), boolType())
   ensures isSubtype(typeOf(ret_1), c_BothConstructors())
   ensures acc(c_BothConstructors_unique(ret_1), write)
+  ensures intFromRef(g_a(ret_1)) == 0
 
 
 method con_c_BothConstructors_args_Int(par_a: Ref) returns (ret_2: Ref)
