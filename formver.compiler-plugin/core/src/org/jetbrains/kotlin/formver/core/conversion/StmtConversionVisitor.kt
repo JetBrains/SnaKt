@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.fir.expressions.impl.FirElseIfTrueCondition
 import org.jetbrains.kotlin.fir.expressions.impl.FirUnitExpression
 import org.jetbrains.kotlin.fir.references.toResolvedSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.isUnit
@@ -25,6 +26,7 @@ import org.jetbrains.kotlin.formver.common.UnsupportedFeatureBehaviour
 import org.jetbrains.kotlin.formver.core.description
 import org.jetbrains.kotlin.formver.core.embeddings.LabelLink
 import org.jetbrains.kotlin.formver.core.embeddings.callables.CallableEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.callables.FunctionSignature
 import org.jetbrains.kotlin.formver.core.embeddings.callables.insertCall
 import org.jetbrains.kotlin.formver.core.embeddings.callables.isVerifyFunction
 import org.jetbrains.kotlin.formver.core.embeddings.expression.*
@@ -291,34 +293,103 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         }
     }
 
-    private fun List<FirExpression>.withVarargsHandled(data: StmtConversionContext, function: CallableEmbedding?) =
-        flatMap { arg ->
-            when (arg) {
-                is FirVarargArgumentsExpression -> {
-                    if (function == null || !function.isVerifyFunction) {
-                        throw SnaktInternalException(
-                            arg.source, "Vararg arguments are currently supported for `verify` function only."
-                        )
-                    }
-                    data.withNoScope {
-                        arg.arguments.map { this.convert(it) }
-                    }
+    private fun buildCallArguments(
+        arguments: List<FirExpression>,
+        data: StmtConversionContext,
+        callee: CallableEmbedding?,
+    ): List<ExpEmbedding> = arguments.flatMap { arg ->
+        when (arg) {
+            is FirVarargArgumentsExpression -> {
+                if (callee == null || !callee.isVerifyFunction) {
+                    throw SnaktInternalException(
+                        arg.source, "Vararg arguments are currently supported for `verify` function only."
+                    )
                 }
-
-                else -> listOf(data.convert(arg))
+                data.withNoScope {
+                    arg.arguments.map { this.convert(it) }
+                }
             }
+
+            else -> listOf(data.convert(arg))
         }
+    }
+
+    /**
+     * Snapshot explicit actuals in source order, then assemble one actual per formal.
+     * Only defaults covered by the literal converter's effect-free cases may be abstracted;
+     * a typed unknown cannot stand in for arbitrary default evaluation.
+     */
+    @OptIn(SymbolInternals::class)
+    private fun FirFunctionCall.argumentsPerParameter(
+        symbol: FirFunctionSymbol<*>,
+        callee: CallableEmbedding,
+        data: StmtConversionContext,
+        declarations: MutableList<Declare>,
+    ): List<ExpEmbedding> {
+        val sourceOrder = functionCallArguments
+        val mapping = resolvedArgumentMapping ?: throw SnaktInternalException(
+            source, "Cannot assemble a call without a resolved argument mapping."
+        )
+        if (mapping.keys.toSet() != argumentList.arguments.toSet() ||
+            mapping.values.any { it.symbol !in symbol.valueParameterSymbols }
+        ) {
+            throw SnaktInternalException(source, "Incomplete argument mapping for ${symbol.name}.")
+        }
+        val byParameter = mapping.entries.groupBy({ (_, parameter) -> parameter.symbol }) { (argument, _) -> argument }
+        val valueArguments = symbol.valueParameterSymbols.map { parameter ->
+            val arguments = byParameter[parameter]
+            if (arguments == null) {
+                val default = parameter.fir.defaultValue as? FirLiteralExpression
+                if (default == null || default.kind !in setOf(
+                        ConstantValueKind.Int, ConstantValueKind.Boolean, ConstantValueKind.Char,
+                        ConstantValueKind.String, ConstantValueKind.Null,
+                    )
+                ) {
+                    throw SnaktInternalException(
+                        source, "Omitted parameter ${parameter.name} has no supported effect-free default summary."
+                    )
+                }
+                return@map null
+            }
+            arguments.singleOrNull() ?: throw SnaktInternalException(
+                source, "Parameter ${parameter.name} of ${symbol.name} is given ${arguments.size} arguments."
+            )
+        }
+        val formalOrder = listOfNotNull(dispatchReceiver, extensionReceiver) + valueArguments
+        val formals = (callee as? FunctionSignature)?.formalArgs ?: throw SnaktInternalException(
+            source, "Cannot determine formal arguments of $callee."
+        )
+        if (formalOrder.size != formals.size) {
+            throw SnaktInternalException(source, "Receiver/parameter arity mismatch for ${symbol.name}.")
+        }
+        val converted = sourceOrder.associateWith { arg ->
+            val exp = buildCallArguments(listOf(arg), data, callee).single()
+            // A lambda has no side effects, and an inline callee needs to see it as a lambda.
+            if (exp.ignoringMetaNodes() is LambdaExp) exp
+            else data.declareAnonVar(exp.type, exp).also { declarations.add(it) }.variable
+        }
+        return formalOrder.mapIndexed { index, arg ->
+            if (arg != null) return@mapIndexed converted.getValue(arg)
+            val formal = formals[index]
+            val (declaration, value) = data.unconstrainedValue(formal.type)
+            declarations.add(declaration)
+            value
+        }
+    }
 
     override fun visitFunctionCall(functionCall: FirFunctionCall, data: StmtConversionContext): ExpEmbedding {
         val symbol = functionCall.toResolvedCallableSymbol() as? FirFunctionSymbol<*>
             ?: throw NotImplementedError("Only functions are expected as callables of function calls, got ${functionCall.toResolvedCallableSymbol()}")
 
         val callee = data.embedAnyFunction(symbol)
-        return callee.insertCall(
-            functionCall.functionCallArguments.withVarargsHandled(data, callee),
-            data,
-            data.embedType(functionCall.resolvedType),
-        )
+        val returnType = data.embedType(functionCall.resolvedType)
+        if (!callee.takesArgumentPerParameter) {
+            return callee.insertCall(buildCallArguments(functionCall.functionCallArguments, data, callee), data, returnType)
+        }
+        val declarations = mutableListOf<Declare>()
+        val args = functionCall.argumentsPerParameter(symbol, callee, data, declarations)
+        val call = callee.insertCall(args, data, returnType)
+        return if (declarations.isEmpty()) call else (declarations + call).toBlock()
     }
 
     override fun visitImplicitInvokeCall(
@@ -332,7 +403,7 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
             )
         val returnType = data.embedType(implicitInvokeCall.resolvedType)
         val receiverSymbol = receiver.calleeReference.toResolvedSymbol<FirBasedSymbol<*>>()!!
-        val args = implicitInvokeCall.argumentList.arguments.withVarargsHandled(data, function = null)
+        val args = buildCallArguments(implicitInvokeCall.argumentList.arguments, data, callee = null)
         return when (val exp = data.embedLocalSymbol(receiverSymbol).ignoringMetaNodes()) {
             is LambdaExp -> {
                 // The lambda is already the receiver, so we do not need to convert it.
