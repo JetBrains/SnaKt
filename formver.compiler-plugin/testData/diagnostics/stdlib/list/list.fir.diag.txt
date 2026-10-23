@@ -165,6 +165,74 @@ method is_empty(l: Ref) returns (v_ret_0: Ref)
   label lbl_ret_0
 }
 
+/list.kt: info: Generated Viper text for first_last:
+field size: Ref
+
+method first(v_this_extension: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires intFromRef(v_this_extension.size) > 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_2), nullable(anyType()))
+  ensures intFromRef(v_this_extension.size) ==
+    old(intFromRef(v_this_extension.size))
+
+
+method first_last(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
+  requires acc(l.size, write)
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
+  var anon_4: Ref
+  anon_0 := isEmpty(l)
+  if (boolFromRef(anon_0)) {
+    v_ret_0 := intToRef(0)
+    goto lbl_ret_0
+  }
+  anon_2 := first(l)
+  anon_1 := anon_2
+  inhale isSubtype(typeOf(anon_1), intType())
+  anon_4 := last(l)
+  anon_3 := anon_4
+  inhale isSubtype(typeOf(anon_3), intType())
+  v_ret_0 := plusInts(anon_1, anon_3)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method isEmpty(v_this: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(v_this), List())
+  requires acc(v_this.size, write)
+  requires intFromRef(v_this.size) >= 0
+  ensures acc(v_this.size, write)
+  ensures intFromRef(v_this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), boolType())
+  ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
+  ensures boolFromRef(ret_1) ==> intFromRef(v_this.size) == 0
+  ensures !boolFromRef(ret_1) ==> intFromRef(v_this.size) > 0
+
+
+method last(v_this_extension: Ref) returns (ret_3: Ref)
+  requires isSubtype(typeOf(v_this_extension), List())
+  requires acc(v_this_extension.size, write)
+  requires intFromRef(v_this_extension.size) >= 0
+  requires intFromRef(v_this_extension.size) > 0
+  ensures acc(v_this_extension.size, write)
+  ensures intFromRef(v_this_extension.size) >= 0
+  ensures isSubtype(typeOf(ret_3), nullable(anyType()))
+  ensures intFromRef(v_this_extension.size) ==
+    old(intFromRef(v_this_extension.size))
+
+
 /list.kt: info: Generated Viper text for nullable_list:
 field size: Ref
 
