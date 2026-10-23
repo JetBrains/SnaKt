@@ -28,12 +28,40 @@ data class NeverEqual(val x: Int) {
     override fun <!VIPER_TEXT!>equals<!>(other: Any?): Boolean = false
 }
 
-// A user-defined `equals` is not modeled, so `==` is not lowered to property equality.
+// Unsupported equality must diagnose even when reference reflexivity would prove it.
 @AlwaysVerify
-fun <!VIPER_TEXT!>userEqualsIsNotStructural<!>() {
+fun userEqualsIsNotStructural() {
     val left = NeverEqual(1)
-    val right = NeverEqual(1)
-    verify(<!VIPER_VERIFICATION_ERROR!>left == right<!>)
+    verify(<!UNSUPPORTED_FEATURE!>left<!> == left)
+}
+
+open class FinalEqualsBase {
+    override final fun <!VIPER_TEXT!>equals<!>(other: Any?): Boolean = false
+}
+
+data class InheritedEquals(val x: Int) : FinalEqualsBase()
+
+@AlwaysVerify
+fun inheritedEqualsIsNotStructural(left: InheritedEquals, right: InheritedEquals) {
+    verify(<!UNSUPPORTED_FEATURE!>left<!> == right)
+}
+
+data class NestedPair(val pair: DataPair)
+
+@AlwaysVerify
+fun referencePropertyEqualityIsUnsupported(left: NestedPair, right: NestedPair) {
+    verify(<!UNSUPPORTED_FEATURE!>left<!> == right)
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>equalitySnapshotsOperands<!>() {
+    var left = DataPair(1, 2)
+    verify(left == if (true) { left = DataPair(3, 4); DataPair(1, 2) } else DataPair(0, 0))
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>equalityFalseValue<!>() {
+    verify(<!VIPER_VERIFICATION_ERROR!>DataPair(1, 2) == DataPair(1, 3)<!>)
 }
 
 data class MutablePair(var first: Int, val second: Int)

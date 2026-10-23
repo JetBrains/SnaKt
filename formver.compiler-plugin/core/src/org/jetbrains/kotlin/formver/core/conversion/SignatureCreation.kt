@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.fir.resolve.toRegularClassSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.ConeKotlinType
+import org.jetbrains.kotlin.fir.types.isAny
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
 import org.jetbrains.kotlin.formver.core.embeddings.callables.*
 import org.jetbrains.kotlin.formver.core.embeddings.expression.EqCmp
@@ -41,9 +42,20 @@ data class SignatureWithTarget<out S : FunctionSignature>(
 val FirRegularClassSymbol.propertySymbols: List<FirPropertySymbol>
     get() = declarationSymbols.filterIsInstance<FirPropertySymbol>()
 
+@OptIn(SymbolInternals::class, DirectDeclarationsAccess::class)
+fun FirRegularClassSymbol.isGeneratedDataClassMember(symbol: FirFunctionSymbol<*>): Boolean =
+    isData && symbol.fir.origin == FirDeclarationOrigin.Synthetic.DataClassMember &&
+            declarationSymbols.any { it === symbol }
+
 @OptIn(DirectDeclarationsAccess::class)
-val FirRegularClassSymbol.declaresEquals: Boolean
-    get() = declarationSymbols.any { it is FirNamedFunctionSymbol && it.name == OperatorNameConventions.EQUALS }
+val FirRegularClassSymbol.hasGeneratedEquals: Boolean
+    get() = isData && resolvedSuperTypes.all { it.isAny } &&
+            declarationSymbols.filterIsInstance<FirNamedFunctionSymbol>().none {
+                it.name == OperatorNameConventions.EQUALS && it.valueParameterSymbols.size == 1 &&
+                        !isGeneratedDataClassMember(it)
+            }
+// Generated equals may be lazy and absent from declarationSymbols. With only Any as a supertype,
+// no inherited override can suppress generation; other supertypes are conservatively unsupported.
 
 private fun <R> FirPropertySymbol.withConstructorParam(action: FirPropertySymbol.(FirValueParameterSymbol) -> R): R? =
     correspondingValueParameterFromPrimaryConstructor?.let { param ->
@@ -237,7 +249,7 @@ private fun generatedComponentProperty(symbol: FirFunctionSymbol<*>): FirPropert
     val componentIndex = name.removePrefix("component").toIntOrNull() ?: return null
     if (componentIndex <= 0 || name != "component$componentIndex") return null
     val dataClass = symbol.receiverType?.toRegularClassSymbol(converter.session)?.takeIf {
-        it.isData && it.declarationSymbols.any { member -> member === symbol }
+        it.isGeneratedDataClassMember(symbol)
     } ?: return null
     val constructor = dataClass.declarationSymbols.filterIsInstance<FirConstructorSymbol>()
         .singleOrNull { it.isPrimaryConstructor() } ?: return null

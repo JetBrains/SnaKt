@@ -1,4 +1,4 @@
-/data_classes.kt: warning: Viper verification error: Assert might fail. Assertion left == right might not hold.
+/data_classes.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon_2) might not hold.
 
 /data_classes.kt: warning: Viper verification error: Assert might fail. Assertion boolFromRef(anon) might not hold.
 

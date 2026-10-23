@@ -21,6 +21,9 @@ import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.coneType
 import org.jetbrains.kotlin.fir.types.canBeNull
 import org.jetbrains.kotlin.fir.types.isUnit
+import org.jetbrains.kotlin.fir.types.isInt
+import org.jetbrains.kotlin.fir.types.isBoolean
+import org.jetbrains.kotlin.fir.types.isChar
 import org.jetbrains.kotlin.fir.types.resolvedType
 import org.jetbrains.kotlin.fir.visitors.FirVisitor
 import org.jetbrains.kotlin.formver.common.SnaktInternalException
@@ -237,25 +240,33 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         right: ExpEmbedding,
         data: StmtConversionContext,
     ): ExpEmbedding {
-        val dataClass = generatedEqualsClass(leftFir, rightFir, data) ?: return EqCmp(left, right)
-
-        val properties = dataClass.propertySymbols.filter {
+        val leftClass = leftFir.resolvedType.toRegularClassSymbol(data.session)
+        val rightClass = rightFir.resolvedType.toRegularClassSymbol(data.session)
+        if (leftClass?.isData != true && rightClass?.isData != true) return EqCmp(left, right)
+        val dataClass = generatedEqualsClass(leftFir, rightFir, data)
+            ?: return unsupportedDataClassEquality(leftFir, data)
+        val propertySymbols = dataClass.propertySymbols.filter {
             it.correspondingValueParameterFromPrimaryConstructor != null
-        }.map(data::embedProperty)
-        // Generated `equals` compares every constructor property; only `val` properties can be read in a pure expression.
-        val getters = properties.map { property ->
-            property.getter?.takeIf { property.isVal } ?: return EqCmp(left, right)
         }
-        return share(left) { sharedLeft ->
-            share(right) { sharedRight ->
-                getters.map { getter ->
-                    EqCmp(
-                        getter.getValueSimple(sharedLeft, data.typeResolver),
-                        getter.getValueSimple(sharedRight, data.typeResolver),
-                    )
-                }.toConjunction()
-            }
+        // Reference equality is not a model of a property's Kotlin `equals`, including nested data classes.
+        if (propertySymbols.any {
+                val type = it.resolvedReturnType
+                val modeled = type.isInt || type.isBoolean || type.isChar
+                type.canBeNull(data.session) || !modeled
+            }) return unsupportedDataClassEquality(leftFir, data)
+        val getters = propertySymbols.map { symbol ->
+            val property = data.embedProperty(symbol)
+            property.getter?.takeIf { property.isVal } ?: return unsupportedDataClassEquality(leftFir, data)
         }
+        // Declarations snapshot values, unlike lazy `share`: RHS effects cannot change the saved LHS.
+        val savedLeft = data.declareAnonVar(left.type, left)
+        val savedRight = data.declareAnonVar(right.type, right)
+        return blockOf(savedLeft, savedRight, getters.map { getter ->
+            EqCmp(
+                getter.getValueSimple(savedLeft.variable, data.typeResolver),
+                getter.getValueSimple(savedRight.variable, data.typeResolver),
+            )
+        }.toConjunction())
     }
 
     /**
@@ -270,8 +281,16 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
         val leftClass = leftFir.resolvedType.toRegularClassSymbol(data.session)
         val rightClass = rightFir.resolvedType.toRegularClassSymbol(data.session)
         if (leftClass != rightClass) return null
-        return leftClass?.takeIf { it.isData && !it.declaresEquals }
+        // Eligibility excludes both user declarations and supertypes that could suppress generated equals.
+        return leftClass?.takeIf { it.hasGeneratedEquals }
     }
+
+    private fun unsupportedDataClassEquality(expression: FirExpression, data: StmtConversionContext): ExpEmbedding =
+        handleUnimplementedElement(
+            expression.source,
+            "Data-class equality requires generated equals, matching non-null types, and immutable Int, Boolean or Char properties.",
+            data,
+        )
 
     override fun visitComparisonExpression(
         comparisonExpression: FirComparisonExpression,
