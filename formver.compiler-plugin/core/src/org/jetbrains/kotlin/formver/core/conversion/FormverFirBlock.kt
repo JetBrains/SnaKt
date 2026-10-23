@@ -54,12 +54,15 @@ fun extractFirSpecification(parentBlock: FirBlock, returnType: ConeKotlinType, c
     val firstStmt = parentBlock.statements.firstOrNull() ?: return FirSpecification()
 
     firstStmt.extractFormverFirBlock(ctx) { isFormverFunctionNamed("postconditions") }?.let { lambda ->
-        return FirSpecification(null, lambda.body, lambda.extractFormverReturnVar(returnType, ctx))
+        val returnVar = lambda.extractFormverReturnVar(returnType, ctx) ?: return FirSpecification()
+        return FirSpecification(null, lambda.body, returnVar)
     }
 
     val precond = firstStmt.extractFormverFirBlock(ctx) { isFormverFunctionNamed("preconditions") }
         ?: return FirSpecification()
     val postcond =
         parentBlock.statements.getOrNull(1)?.extractFormverFirBlock(ctx) { isFormverFunctionNamed("postconditions") }
-    return FirSpecification(precond.body, postcond?.body, postcond?.extractFormverReturnVar(returnType, ctx))
+    val returnVar = postcond?.extractFormverReturnVar(returnType, ctx)
+    // A rejected binder must not leave a body whose parameter can no longer be resolved.
+    return FirSpecification(precond.body, postcond?.body.takeIf { returnVar != null }, returnVar)
 }
