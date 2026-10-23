@@ -23,10 +23,9 @@ fun StmtConversionContext.argumentDeclaration(
                 proven = true
                 access = true
             }
-            // If `argWithInvariants` is `Cast(...(Cast(someVariable))...)` it is fine to use it
-            // since in Viper it will always be translated to `someVariable`.
-            // On other hand, `TypeEmbedding` and invariants in Viper are guaranteed
-            // via previous line.
+            // Reuse the underlying variable while retaining the wrapper: when types differ,
+            // it inhales the requested type and access invariants during linearization.
+            // These are trusted assumptions, not facts established by verification.
             if (argWithInvariants.underlyingVariable != null) null to argWithInvariants
             else declareAnonVar(callType, argWithInvariants).let {
                 it to it.variable

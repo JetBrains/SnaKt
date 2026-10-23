@@ -22,14 +22,10 @@ val FirIntersectionOverridePropertySymbol.propertyIntersections
     get() = intersections.filterIsInstanceAnd<FirPropertySymbol> { it.isVal == isVal }
 
 /**
- * Tries to find final property symbol actually declared in some class instead of
- * (potentially) fake property symbol.
- * Note that if some property is found it is fixed since
- * 1. there can't be two non-abstract properties which don't subsume each other
- * in the hierarchy (kotlin disallows that) and final properties can't be abstract;
- * 2. final property can't subsume other final property as that means final property
- * is overridden.
- * //TODO: decide if we leave this lookup or consider it unsafe.
+ * Finds a final property with default accessors through same-mutability intersection parents.
+ * Assumes a Kotlin-valid property hierarchy: unrelated concrete implementations are disallowed
+ * and final properties cannot override one another, so traversal order does not affect selection.
+ * Symbol selection alone does not establish permissions to access the property.
  */
 fun FirPropertySymbol.findFinalParentProperty(): FirPropertySymbol? =
     if (this !is FirIntersectionOverridePropertySymbol)
@@ -38,19 +34,11 @@ fun FirPropertySymbol.findFinalParentProperty(): FirPropertySymbol? =
 
 
 /**
- * This is a key function when looking up properties.
- * It translates a kotlin `receiver.field` expression to an `ExpEmbedding`.
- *
- * Note that in FIR this `field` may be represented as `FirIntersectionOverridePropertySymbol`
- * which is necessary when the property could hypothetically inherit from multiple sources.
- * However, we don't register such symbols in the context when traversing the class.
- * Hence, some advanced logic is needed here.
- *
- * First, we try to find an actual backing field somewhere in the parents of the field with a
- * dfs-like algorithm on `FirIntersectionOverridePropertySymbol`s (it also should be final).
- *
- * If final backing field is not found, we lazily create a getter/setter pair for this
- * `FirIntersectionOverrideProperty`.
+ * Embeds parameter, local, member and extension property accesses.
+ * For dispatch-receiver properties, prefers a final, default-accessor declaration found
+ * through intersection parents; otherwise embeds the referenced property symbol lazily.
+ * The property embedding chooses its representation, which need not be a backing field
+ * or include a setter.
  */
 fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAccessExpression): PropertyAccessEmbedding =
     when (val calleeSymbol = accessExpression.calleeReference.symbol) {
