@@ -40,18 +40,21 @@ The checker tracks two kinds of uniqueness:
   - `AccessState = PathTrie<Access>`
   - `UniquenessState = PathTrie<Uniqueness>`
 - `ExpressionAccessStateResolver.kt` extracts the paths touched by each expression.
+- A trie node can be a **summary node**: a leaf whose value is the join of everything that would otherwise be below it, standing for both its own prefix and every path under it. A lookup or update that would descend past a summary node lands on the node itself instead. `UniquenessState.summarizeRecursivePaths` collapses any path that revisits a symbol into a summary, which bounds path length by the number of distinct symbols a function mentions plus the first repeated symbol.
 
 ### CFG uniqueness state analysis
 
-`GraphUniquenessStatesAnalyzer.kt` computes a fixed point over the following CFG nodes:
+`GraphUniquenessStatesAnalyzer.kt` computes a fixed point over the following CFG nodes. The outgoing state of every node is normalized by `UniquenessState.summarizeRecursivePaths` before it is recorded, so recursion through a symbol never deepens the trie past a summary node — this bounds representation size but does not alone establish convergence.
 
 - **Initialization**
   - The initial state contains the uniqueness information of the function's parameters.
 
 - **Variable declaration/assignment**
-  - Project RHS' uniqueness substate into LHS' path.
+  - Project RHS' uniqueness substate against the incoming state.
+  - Move RHS access paths, also against the incoming state.
+  - Insert the projected substate into LHS' path.
   - Initialize LHS path to declared uniqueness.
-  - Move RHS access paths.
+  - The order matters when the LHS is a prefix of an RHS path: advancing a cursor with `current = current.next` moves the field out of the node the cursor is leaving, and overwriting `current` then drops that mark, because it describes a location the cursor no longer reaches.
 
 - **Function-call enter**
   - Move all receivers (including context receivers) and value arguments.
@@ -95,6 +98,7 @@ Current scenarios include:
 - return/throw escape consistency
 - loops, `when`, `try/catch`, nullable flows
 - constructor/operator cases
+- recursive data structures: linked lists and binary trees, walked both by loop and by recursion
 
 ## Current Limitations / Untested Behavior
 
@@ -116,4 +120,7 @@ Known limitations in current code/tests:
 
 - **Interaction with closures** 
   - The current `GraphUniquenessStatesAnalyzer.kt` visits the lambda subgraphs as if they were part of the local control flows, which can result in unexpected behavior.
+
+- **Summary nodes are approximate**
+  - Summary updates are weak: their result is joined with the existing value, so restoring one path cannot erase another represented path's moved fact. A joined summary and a shared declaration cannot exclude a restored unique descendant. Transforms therefore also consider a unique value, making a move record a possible move for the region. This rejects repeated reads of restored unique links through shared fields, but can also report moved accesses in shared-only summarized regions.
   

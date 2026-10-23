@@ -97,6 +97,9 @@ fun AccessState.append(other: AccessState): AccessState {
  * If any of the intermediate path components is not resolved within [uniquenessState], the uniqueness of those
  * components is automatically inferred to be the join between the declared uniqueness of the component's symbol and the
  * uniqueness of the parent.
+ *
+ * Summary updates are weak. Their joined value and declared types cannot exclude a unique descendant, so the
+ * transform also considers a unique value. This may conservatively mark shared-only summarized accesses as moved.
  */
 context(context: CheckerContext)
 fun AccessState.transformOnTerminals(
@@ -113,17 +116,27 @@ fun AccessState.transformOnTerminals(
                 )
             )
 
-        val newUniquenessChild = accessChild
-            .transformOnTerminals(uniquenessChild, transform)
+        val newUniquenessChild = if (uniquenessChild.summarizesDescendants) {
+            val ownPath = listOf(symbol)
+            val paths = accessChild.enumeratePaths().map { ownPath + it }
+            val accessedPaths = if (accessChild.isTerminal) sequenceOf(ownPath) + paths else paths
 
-        newUniquenessState = newUniquenessState.putChild(
-            symbol,
-            if (accessChild.isTerminal) {
-                transform(symbol, newUniquenessChild)
-            } else {
-                newUniquenessChild
+            accessedPaths.fold(uniquenessChild) { summary, path ->
+                val unrecorded = UniquenessState(path.resolveDeclaredUniqueness().join(newUniquenessState.data))
+                val possibleUnique = UniquenessState(Uniqueness.Unique)
+                summary.copy(
+                    data = summary.data
+                        .join(transform(path.last(), unrecorded).data)
+                        .join(transform(path.last(), possibleUnique).data)
+                )
             }
-        )
+        } else {
+            val transformedChild = accessChild.transformOnTerminals(uniquenessChild, transform)
+
+            if (accessChild.isTerminal) transform(symbol, transformedChild) else transformedChild
+        }
+
+        newUniquenessState = newUniquenessState.putChild(symbol, newUniquenessChild)
     }
 
     return newUniquenessState

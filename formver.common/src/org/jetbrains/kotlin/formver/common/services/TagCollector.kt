@@ -120,6 +120,13 @@ abstract class TagCollector(
     }
 
     /**
+     * Filtered inline assertions compare tag presence at a range, not report multiplicity.
+     * Unfiltered assertions and diagnostic text goldens retain multiplicity.
+     */
+    private fun getDeduplicatedReportedInfos(): Map<TestFile, List<CodeMetaInfo>> =
+        reportedInfos.mapValues { (_, infos) -> infos.distinctBy { Triple(it.tag, it.start, it.end) } }
+
+    /**
      * Renders the expected output but ignores tags that are not considered for comparison
      */
     private fun expectedFileFilteredForTags(): String {
@@ -137,7 +144,7 @@ abstract class TagCollector(
      */
     fun assertFileEqualFilteredForTags() {
         val expectedOutput = expectedFileFilteredForTags()
-        val actualOutput = renderText(reportedInfos, testServices.sourceFileProvider::getContentOfSourceFile)
+        val actualOutput = renderText(getDeduplicatedReportedInfos(), testServices.sourceFileProvider::getContentOfSourceFile)
         testServices.assertions.assertEquals(expectedOutput, actualOutput) {
             "Actual tags differ from golden file"
         }

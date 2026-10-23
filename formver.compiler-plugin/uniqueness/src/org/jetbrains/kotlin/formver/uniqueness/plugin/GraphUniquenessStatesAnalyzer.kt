@@ -83,6 +83,12 @@ class GraphUniquenessStatesAnalyzer(
     private fun UniquenessStateFlow.getOrInitialize(): UniquenessState =
         this[Unit] ?: initialState
 
+    /**
+     * Records [state] with descendants below the first repeated symbol summarized at every CFG node.
+     */
+    private fun UniquenessStateFlow.putSummarized(state: UniquenessState): UniquenessStateFlow =
+        put(Unit, state.summarizeRecursivePaths())
+
     override fun visitSubGraph(node: CFGNodeWithSubgraphs<*>, graph: ControlFlowGraph): Boolean {
         return node.extendsLocalFlow
     }
@@ -91,7 +97,7 @@ class GraphUniquenessStatesAnalyzer(
         node: CFGNode<*>,
         data: PathAwareUniquenessStateFlow
     ): PathAwareUniquenessStateFlow {
-        return data.transformValues { data -> data.put(Unit, data.getOrInitialize()) }
+        return data.transformValues { data -> data.putSummarized(data.getOrInitialize()) }
     }
 
     override fun visitVariableDeclarationNode(
@@ -111,21 +117,20 @@ class GraphUniquenessStatesAnalyzer(
 
             return data.transformValues { data ->
                 val uniquenessState = data.getOrInitialize()
+                val rightUniquenessState = rightAccessState.projectTerminalUniquenessState(uniquenessState)
                 var newUniquenessState = uniquenessState
-
-                if (initializer != null) {
-                    val rightAccessState = initializer.resolveAccessState()
-                    val rightUniquenessState = rightAccessState.projectTerminalUniquenessState(uniquenessState)
-                    newUniquenessState = newUniquenessState.insert(listOf(leftSymbol), rightUniquenessState)
-                }
-
-                newUniquenessState = leftAccessState.initialize(newUniquenessState)
 
                 if (leftSymbol.source?.kind != KtFakeSourceElementKind.WhenGeneratedSubject) {
                     newUniquenessState = rightAccessState.move(newUniquenessState)
                 }
 
-                data.put(Unit, newUniquenessState)
+                if (initializer != null) {
+                    newUniquenessState = newUniquenessState.insert(listOf(leftSymbol), rightUniquenessState)
+                }
+
+                newUniquenessState = leftAccessState.initialize(newUniquenessState)
+
+                data.putSummarized(newUniquenessState)
             }
         }
     }
@@ -142,20 +147,21 @@ class GraphUniquenessStatesAnalyzer(
             val leftAccessState = leftValue.resolveAccessState()
 
             return data.transformValues { data ->
-                var newUniquenessState = data.getOrInitialize()
+                val uniquenessState = data.getOrInitialize()
                 val leftAccessPaths = leftAccessState.enumeratePaths()
                 val rightAccessState = rightValue.resolveAccessState()
 
+                // Read and move the RHS before overwriting the LHS: `current = current.next` moves the old node's link.
+                val rightUniquenessState = rightAccessState.projectTerminalUniquenessState(uniquenessState)
+                var newUniquenessState = rightAccessState.move(uniquenessState)
+
                 if (leftAccessPaths.count() == 1) {
-                    val leftPath = leftAccessPaths.first()
-                    val rightUniquenessState = rightAccessState.projectTerminalUniquenessState(newUniquenessState)
-                    newUniquenessState = newUniquenessState.insert(leftPath, rightUniquenessState)
+                    newUniquenessState = newUniquenessState.insert(leftAccessPaths.first(), rightUniquenessState)
                 }
 
                 newUniquenessState = leftAccessState.initialize(newUniquenessState)
-                newUniquenessState = rightAccessState.move(newUniquenessState)
 
-                data.put(Unit, newUniquenessState)
+                data.putSummarized(newUniquenessState)
             }
         }
     }
@@ -179,7 +185,7 @@ class GraphUniquenessStatesAnalyzer(
                     newUniquenessState = argument.resolveAccessState().move(newUniquenessState)
                 }
 
-                data.put(Unit, newUniquenessState)
+                data.putSummarized(newUniquenessState)
             }
         }
     }
@@ -206,7 +212,7 @@ class GraphUniquenessStatesAnalyzer(
                     newUniquenessState = argument.resolveAccessState().initialize(newUniquenessState)
                 }
 
-                data.put(Unit, newUniquenessState)
+                data.putSummarized(newUniquenessState)
             }
         }
     }
@@ -227,7 +233,7 @@ class GraphUniquenessStatesAnalyzer(
                 val defaultValueUniquenessState = defaultValueAccessState.projectTerminalUniquenessState(newUniquenessState)
                 newUniquenessState = newUniquenessState.insert(valueParameterPath, defaultValueUniquenessState)
                 newUniquenessState = defaultValueAccessState.move(newUniquenessState)
-                data.put(Unit, newUniquenessState)
+                data.putSummarized(newUniquenessState)
             }
         }
     }
@@ -244,7 +250,7 @@ class GraphUniquenessStatesAnalyzer(
                         val resultAccessState = jumpExpression.result.resolveAccessState()
                         newUniquenessState = resultAccessState.move(newUniquenessState)
 
-                        data.put(Unit, newUniquenessState)
+                        data.putSummarized(newUniquenessState)
                     }
                 }
             }
@@ -264,7 +270,7 @@ class GraphUniquenessStatesAnalyzer(
                 val exceptionAccessState = throwExpression.exception.resolveAccessState()
                 newUniquenessState = exceptionAccessState.move(newUniquenessState)
 
-                data.put(Unit, newUniquenessState)
+                data.putSummarized(newUniquenessState)
             }
         }
     }
