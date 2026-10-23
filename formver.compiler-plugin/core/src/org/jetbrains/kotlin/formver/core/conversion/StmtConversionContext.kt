@@ -6,11 +6,14 @@
 package org.jetbrains.kotlin.formver.core.conversion
 
 import org.jetbrains.kotlin.KtSourceElement
+import org.jetbrains.kotlin.fir.FirEvaluatorResult
 import org.jetbrains.kotlin.fir.FirLabel
 import org.jetbrains.kotlin.fir.declarations.FirSimpleFunction
+import org.jetbrains.kotlin.fir.declarations.utils.isConst
 import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.references.symbol
+import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.types.isBoolean
 import org.jetbrains.kotlin.fir.types.isUnit
@@ -127,7 +130,10 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
         is FirValueParameterSymbol -> embedParameter(calleeSymbol).asPropertyAccess()
         is FirPropertySymbol -> {
             val type = embedType(calleeSymbol.resolvedReturnType)
+            val folded = if (calleeSymbol.isConst) foldConstProperty(calleeSymbol, accessExpression) else null
             when {
+                folded != null -> folded.asPropertyAccess()
+
                 accessExpression.dispatchReceiver != null -> {
                     val property = calleeSymbol.findFinalParentProperty()?.let {
                         embedProperty(it)
@@ -148,6 +154,24 @@ fun StmtConversionContext.embedPropertyAccess(accessExpression: FirPropertyAcces
             error("Property access symbol $calleeSymbol has unsupported type.")
     }
 
+/**
+ * Evaluates a `const` property to its initializer's value, or returns null if it cannot be evaluated.
+ * A receiver that is more than a qualifier or `this` is still evaluated for its effects, before the value.
+ */
+@OptIn(SymbolInternals::class)
+private fun StmtConversionContext.foldConstProperty(
+    symbol: FirPropertySymbol,
+    accessExpression: FirPropertyAccessExpression,
+): ExpEmbedding? {
+    val evaluated = FirExpressionEvaluator.evaluatePropertyInitializer(symbol.fir, session)
+    if (evaluated !is FirEvaluatorResult.Evaluated) return null
+    val literal = (evaluated.result as? FirLiteralExpression)?.let { convert(it) } ?: return null
+    val receiver = accessExpression.dispatchReceiver
+    return when (receiver) {
+        null, is FirResolvedQualifier, is FirThisReceiverExpression -> literal
+        else -> blockOf(convert(receiver), literal)
+    }
+}
 
 fun StmtConversionContext.argumentDeclaration(
     arg: ExpEmbedding,
