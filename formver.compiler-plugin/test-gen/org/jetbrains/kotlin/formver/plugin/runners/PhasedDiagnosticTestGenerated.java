@@ -70,6 +70,12 @@ public class PhasedDiagnosticTestGenerated extends AbstractPhasedDiagnosticTest 
       }
 
       @Test
+      @TestMetadata("substring_search.kt")
+      public void testSubstring_search() {
+        runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/substring_search.kt");
+      }
+
+      @Test
       @TestMetadata("z_function.kt")
       public void testZ_function() {
         runTest("formver.compiler-plugin/testData/diagnostics/expensive_verification/algorithms/z_function.kt");
