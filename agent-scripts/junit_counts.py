@@ -18,10 +18,22 @@ def is_assertion_failure(node):
     if failure_type != MULTI_CAUSE_TYPE:
         return False
 
-    # Gradle wraps multiple failures from one test in DefaultMultiCauseException.
-    # Its message lists each direct cause on a tab-indented line before the trace.
-    causes = re.findall(r"^\t([^:\s]+):", node.get("message", ""), re.MULTILINE)
-    return bool(causes) and all(is_assertion_type(cause) for cause in causes)
+    # Accept only the complete known message shape, not a subset of causes
+    # selected by a regex. Unknown or truncated aggregates fail closed.
+    lines = node.get("message", "").splitlines()
+    if not lines:
+        return False
+    header = re.fullmatch(
+        r"(?:org\.gradle\.internal\.exceptions\.DefaultMultiCauseException: )?"
+        r"Multiple Failures \(([1-9][0-9]*) failures\)", lines[0]
+    )
+    if header is None or int(header.group(1)) != len(lines) - 1:
+        return False
+    for line in lines[1:]:
+        cause = re.fullmatch(r"\t([^:\s]+)(?::.*)?", line)
+        if cause is None or not is_assertion_type(cause.group(1)):
+            return False
+    return True
 
 total = assertion_failed = other_failed = skipped = unreadable = 0
 

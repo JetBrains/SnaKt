@@ -130,9 +130,9 @@ tally() {
     total_unreadable=$((total_unreadable + unreadable))
 }
 
-# In --update-goldens mode a matching test is expected to fail:
-# assertEqualsToFile writes the golden and then fails. The task's failure is
-# reported only when its results show something besides those rewrites.
+# Update mode tolerates assertion-classified failures in fresh, readable results.
+# This accommodates assertEqualsToFile, which writes then fails, but does not
+# establish that any golden was rewritten or that verification succeeded.
 run_module() {
     local module="$1" task="$2" results_dir="$3" on_failure="$4"
     local rewritten_before="$total_rewritten" failed_before="$total_failed"
