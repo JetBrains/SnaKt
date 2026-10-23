@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.formver.core
 import org.jetbrains.kotlin.KtSourceElement
 import org.jetbrains.kotlin.fir.FirAnnotationContainer
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.fir.contracts.FirEffectDeclaration
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataKey
 import org.jetbrains.kotlin.fir.declarations.FirDeclarationDataRegistry
@@ -18,6 +19,8 @@ import org.jetbrains.kotlin.fir.declarations.impl.FirDefaultPropertySetter
 import org.jetbrains.kotlin.fir.declarations.utils.isInline
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.FirFunctionCall
+import org.jetbrains.kotlin.fir.expressions.FirStatement
+import org.jetbrains.kotlin.fir.expressions.toResolvedCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.SymbolInternals
 import org.jetbrains.kotlin.fir.symbols.impl.FirFunctionSymbol
@@ -75,6 +78,22 @@ fun kotlinCallableId(className: String?, name: String): CallableId = callableId(
 fun FirBasedSymbol<*>.isUnique(session: FirSession) = hasAnnotation(annotationId("Unique"), session)
 
 fun FirBasedSymbol<*>.isBorrowed(session: FirSession) = hasAnnotation(annotationId("Borrowed"), session)
+
+/**
+ * Returns `true` if [this] function is part of the specification DSL, that is, if it carries `@SpecificationHelper`.
+ *
+ * Its call-entry and call-exit uniqueness transitions are neutral; argument expressions, including
+ * nested ordinary calls, are still analyzed.
+ */
+context(context: CheckerContext)
+private fun FirFunctionSymbol<*>.isSpecificationFunction(): Boolean =
+    hasAnnotation(annotationId("SpecificationHelper"), context.session)
+
+context(context: CheckerContext)
+fun FirStatement.isSpecificationCall(): Boolean =
+    ((this as? FirFunctionCall)
+        ?.toResolvedCallableSymbol() as? FirFunctionSymbol<*>)
+        ?.isSpecificationFunction() ?: false
 
 fun FirBasedSymbol<*>.isPure(session: FirSession) = hasAnnotation(annotationId("Pure"), session)
 

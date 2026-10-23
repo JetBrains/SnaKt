@@ -65,6 +65,17 @@ The checker tracks two kinds of uniqueness:
 - **Merges**
   - Join incoming states path-wise.
 
+Both call nodes preserve their incoming state for a call the analyzer's
+`UniquenessNeutralCallPredicate` accepts. The plugin supplies `isSpecificationCall`, which recognizes
+`@SpecificationHelper` DSL primitives, including quantifiers and `UniquePred` construction. These
+call-entry and call-exit transitions neither move references nor restore previously moved ones.
+Argument expressions are still analyzed; nested ordinary calls retain their ownership effects.
+
+DSL lambda parameters, `old`'s parameter and `UniquePred`'s data parameter are `@Borrowed`; not all DSL
+parameters are borrowed. Borrowing does not permit arbitrary reads of moved references or exempt calls
+from escape-consistency checking. `FunctionEscapeUniquenessConsistencyChecker.resolveEscapes` includes
+all function-call entry nodes, including specification calls in ordinary functions.
+
 ### Diagnostics
 
 Checkers consume the above analyses:
@@ -79,6 +90,11 @@ Checkers consume the above analyses:
   - reports moved subpaths left in borrowed locals at function exit
 - `ExpressionArgumentUniquenessCollisionChecker.kt`
   - reports duplicate/overlapping unique arguments in one call
+
+The three flow-sensitive function checkers are registered through `asSpecificationAware()`
+(`SpecificationAwareChecker.kt`, in the plugin module), which skips checking direct specification lambda
+bodies. The property-access locality checker uses the same wrapper. Only the innermost enclosing call
+or assignment determines this context: a lambda passed to a nested ordinary call remains checked.
 
 ## Current Test Coverage
 
@@ -116,4 +132,12 @@ Known limitations in current code/tests:
 
 - **Interaction with closures** 
   - The current `GraphUniquenessStatesAnalyzer.kt` visits the lambda subgraphs as if they were part of the local control flows, which can result in unexpected behavior.
-  
+
+- **Reading a moved value inside a specification**
+  - Whether this is reported depends on the shape of the DSL entry point. `verify(a === b)` evaluates its
+    argument in the enclosing function's flow, so a moved `a` is reported; `preconditions { a.n == 0 }` puts it
+    in a lambda that `asSpecificationAware()` stands the checker down on, so nothing is reported.
+  - `uniqueness_checker/specification.kt` records this asymmetry and the neutral/non-restoration cases
+    in checker-only expectations. It does not establish predicate validity or a general ghost-read policy.
+  - Partially moved parents and nested specification boundaries need coverage and an explicit ownership-read
+    policy; neutral call transitions do not disable escape-consistency diagnostics.
