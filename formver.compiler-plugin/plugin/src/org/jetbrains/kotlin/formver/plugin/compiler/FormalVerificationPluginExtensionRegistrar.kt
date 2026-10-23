@@ -28,8 +28,7 @@ class FormalVerificationPluginExtensionRegistrar(private val config: PluginConfi
         registerDiagnosticContainers(VerificationErrors)
         registerDiagnosticContainers(ConversionErrors)
 
-        // The attribute extensions stay behind the check flags for now: registering them changes the types conversion
-        // sees, so turning them on everywhere has to come with the conversion change that reads them.
+        // Type-attribute extensions affect the FIR types consumed by conversion and require explicit checker opt-in.
         if (config.checkLocality) {
             registerDiagnosticContainers(LocalityErrors)
             registerDiagnosticContainers(LocalityContractErrors)

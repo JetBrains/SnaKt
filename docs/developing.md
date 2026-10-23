@@ -43,10 +43,10 @@ Which checks run:
 
 - `NEVER_VALIDATE` — convert but do not verify. Consistency checking still runs.
   This is how a test that is not meant to reach the verifier says so.
-- `CHECKERS_ONLY` — locality and uniqueness checking. No conversion.
-- `ALWAYS_VALIDATE` — verify every target. Verification is already the default,
-  so this changes nothing on its own; it earns its place by overriding
-  `CHECKERS_ONLY` above.
+- `CHECKERS_ONLY` — locality and uniqueness checking. No conversion or verification.
+  Cannot be combined with `ALWAYS_VALIDATE`.
+- `ALWAYS_VALIDATE` — verify every target unless conversion-only mode disables
+  verification. Verification is already the default.
 
 What the diagnostic contains:
 

@@ -17,7 +17,7 @@ import org.jetbrains.kotlin.formver.uniqueness.plugin.render
 import org.jetbrains.kotlin.formver.uniqueness.plugin.resolveUniquenessStateFlows
 
 /**
- * Stub checker for emitting the rendered representation of a graph along with the uniqueness state information.
+ * Emits a diagnostic containing the control-flow graph annotated with uniqueness state information.
  */
 object FunctionUniquenessStateRenderingChecker : FirSimpleFunctionChecker(MppCheckerKind.Common) {
     context(context: CheckerContext, reporter: DiagnosticReporter)

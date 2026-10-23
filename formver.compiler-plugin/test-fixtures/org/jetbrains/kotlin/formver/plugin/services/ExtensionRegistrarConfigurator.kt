@@ -37,6 +37,10 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             "Directives FULL_VIPER_DUMP and RENDER_PREDICATES cannot be present in the same test file."
         }
 
+        require(!(CHECKERS_ONLY in module.directives && ALWAYS_VALIDATE in module.directives)) {
+            "Directives CHECKERS_ONLY and ALWAYS_VALIDATE cannot be present in the same test file."
+        }
+
         val logLevel = when {
             FULL_VIPER_DUMP in module.directives -> LogLevel.FULL_VIPER_DUMP
             RENDER_PREDICATES in module.directives -> LogLevel.SHORT_VIPER_DUMP_WITH_PREDICATES
@@ -57,7 +61,7 @@ class ExtensionRegistrarConfigurator(testServices: TestServices) : EnvironmentCo
             checkersOnly -> TargetsSelection.NO_TARGETS
             else -> TargetsSelection.ALL_TARGETS
         }
-        // Only checker tests run the checkers, so conversion and verification tests see the same types as before.
+        // Checker type attributes affect conversion inputs, so conversion and verification tests keep them disabled.
         val checkUniqueness = checkersOnly
         val checkLocality = checkersOnly
         val config = PluginConfiguration(
