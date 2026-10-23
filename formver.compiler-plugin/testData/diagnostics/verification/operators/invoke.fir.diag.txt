@@ -1,0 +1,238 @@
+/invoke.kt: info: Generated Viper text for invoke:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := plusInts(value(this), argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for operatorSyntax:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method operatorSyntax(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for explicitSyntax:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method explicitSyntax(probe: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+/invoke.kt: info: Generated Viper text for functionTypeSyntax:
+method functionTypeSyntax(operation: Ref, argument: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(operation), functionType())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  v_ret_0 := anon
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for explicitFunctionTypeSyntax:
+method explicitFunctionTypeSyntax(operation: Ref, argument: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(operation), functionType())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  inhale isSubtype(typeOf(anon), intType())
+  v_ret_0 := anon
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for invoke:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), SpecifiedProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), SpecifiedProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) ==
+    intFromRef(value(this)) + intFromRef(argument)
+{
+  v_ret_0 := plusInts(value(this), argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for reliesOnInvokePostcondition:
+function value(this: Ref): Ref
+  requires isSubtype(typeOf(this), SpecifiedProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method invoke(this: Ref, argument: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), SpecifiedProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_2), intType())
+  ensures intFromRef(ret_2) ==
+    intFromRef(value(this)) + intFromRef(argument)
+
+
+method reliesOnInvokePostcondition(probe: Ref, argument: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(probe), SpecifiedProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) ==
+    intFromRef(value(probe)) + intFromRef(argument)
+{
+  v_ret_0 := invoke(probe, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for makeProbe:
+function g_value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_1), OperatorProbe())
+  ensures acc(OperatorProbe_unique(ret_1), write)
+  ensures intFromRef(g_value(ret_1)) == intFromRef(par_value)
+
+
+method makeProbe(par_value: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(v_ret_0), OperatorProbe())
+{
+  v_ret_0 := con(par_value)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for callResultReceiver:
+function g_value(this: Ref): Ref
+  requires isSubtype(typeOf(this), OperatorProbe())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method callResultReceiver(argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon: Ref
+  anon := makeProbe(argument)
+  v_ret_0 := invoke(anon, argument)
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+method invoke(this: Ref, argument: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), OperatorProbe())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(ret_1), intType())
+
+
+method makeProbe(par_value: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_value), intType())
+  ensures isSubtype(typeOf(ret_2), OperatorProbe())
+
+
+/invoke.kt: info: Generated Viper text for functionTypeCallResultReceiver:
+method functionTypeCallResultReceiver(make: Ref, argument: Ref)
+  returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(make), functionType())
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+{
+  var anon_0: Ref
+  var anon_1: Ref
+  inhale isSubtype(typeOf(anon_1), functionType())
+  inhale isSubtype(typeOf(anon_0), intType())
+  v_ret_0 := anon_0
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for lambdaReceiver:
+method lambdaReceiver(argument: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(argument), intType())
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == intFromRef(argument) + 1
+{
+  var v_ret_3: Ref
+  v_ret_3 := plusInts(argument, intToRef(1))
+  goto lbl_ret_3
+  label lbl_ret_3
+  v_ret_0 := v_ret_3
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/invoke.kt: info: Generated Viper text for inlinedExplicitInvoke:
+method explicitInvokeInline(f: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(f), functionType())
+  ensures isSubtype(typeOf(ret_2), intType())
+
+
+method inlinedExplicitInvoke() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures intFromRef(v_ret_0) == 1
+{
+  var v_ret_4: Ref
+  var v_ret_5: Ref
+  var anon: Ref
+  anon := intToRef(0)
+  v_ret_5 := plusInts(anon, intToRef(1))
+  goto lbl_ret_5
+  label lbl_ret_5
+  v_ret_4 := v_ret_5
+  goto lbl_ret_4
+  label lbl_ret_4
+  v_ret_0 := v_ret_4
+  goto lbl_ret_0
+  label lbl_ret_0
+}
