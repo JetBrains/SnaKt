@@ -71,8 +71,16 @@ fun usedSpecBlocks(block: FirBlock, position: SpecBlockPosition): Map<SpecBlockK
 fun findIgnoredSpecBlocks(body: FirBlock): List<Pair<SpecBlockKind, FirFunctionCall>> =
     SpecBlockCollector(body).ignored
 
+/**
+ * Whether [body] contains a resolved SnaKt specification call, including misplaced blocks.
+ * Skips nested lambdas and local functions, which own their blocks.
+ */
+fun containsSpecBlocks(body: FirBlock): Boolean = SpecBlockCollector(body).found
+
 private class SpecBlockCollector(body: FirBlock) : FirVisitorVoid() {
     val ignored = mutableListOf<Pair<SpecBlockKind, FirFunctionCall>>()
+    var found = false
+        private set
     private val used = mutableListOf<FirFunctionCall>()
 
     init {
@@ -97,6 +105,7 @@ private class SpecBlockCollector(body: FirBlock) : FirVisitorVoid() {
             visitElement(functionCall)
             return
         }
+        found = true
         if (used.none { it === functionCall }) ignored.add(kind to functionCall)
     }
 
