@@ -2,6 +2,7 @@
 
 // Codeforces 1512A, "Spy Detected!": the index of the one entry that differs from all others.
 // https://codeforces.com/problemset/problem/1512/A
+// Values are characters; the result is a zero-based index, not the contest's one-based answer.
 
 import org.jetbrains.kotlin.formver.plugin.*
 

@@ -2,6 +2,7 @@
 
 // Codeforces 158A, "Next Round": how many of the sorted scores reach the k-th place score and are positive.
 // https://codeforces.com/problemset/problem/158/A
+// Scores are character codes 0..100 (not decimal digits); k is a one-based place.
 
 import org.jetbrains.kotlin.formver.plugin.*
 
