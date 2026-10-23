@@ -1,3 +1,24 @@
+/data_classes.kt: info: Generated Viper text for copy:
+function first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method copy(this: Ref, tag: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  requires isSubtype(typeOf(tag), stringType())
+  ensures isSubtype(typeOf(v_ret_0), DataPair())
+{
+  v_ret_0 := this
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
 /data_classes.kt: info: Generated Viper text for consumeUnique:
 function first(this: Ref): Ref
   requires isSubtype(typeOf(this), DataPair())
@@ -144,9 +165,13 @@ method dataClassCopyDefaults() returns (v_ret_0: Ref)
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var copied: Ref
-  var anon: Ref
-  anon := con(intToRef(10), intToRef(20))
-  copied := copy(anon, g_first(anon), intToRef(30))
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  anon_0 := con(intToRef(10), intToRef(20))
+  anon_1 := intToRef(30)
+  anon_2 := g_first(anon_0)
+  copied := copy(anon_0, anon_2, anon_1)
   assert intFromRef(g_first(copied)) == 10
   assert intFromRef(g_second(copied)) == 30
   label lbl_ret_0
@@ -196,12 +221,179 @@ method copyResultProvidesUniqueAccess() returns (v_ret_0: Ref)
   var copied: Ref
   var anon_0: Ref
   var anon_1: Ref
+  var anon_2: Ref
+  var anon_3: Ref
   anon_0 := con(intToRef(10), intToRef(20))
-  copied := copy(anon_0, g_first(anon_0), intToRef(30))
-  anon_1 := consumeUnique(copied)
+  anon_1 := intToRef(30)
+  anon_2 := g_first(anon_0)
+  copied := copy(anon_0, anon_2, anon_1)
+  anon_3 := consumeUnique(copied)
   label lbl_ret_0
   inhale isSubtype(typeOf(v_ret_0), unitType())
 }
+
+/data_classes.kt: info: Generated Viper text for copyArgumentOrder:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+  ensures acc(DataPair_unique(ret_2), write)
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+  ensures acc(DataPair_unique(ret_1), write)
+
+
+method copyArgumentOrder() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var n: Ref
+  var copied: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  n := intToRef(0)
+  anon_0 := con(intToRef(0), intToRef(0))
+  n := plusInts(n, intToRef(1))
+  anon_1 := n
+  n := plusInts(n, intToRef(1))
+  anon_2 := n
+  copied := copy(anon_0, anon_2, anon_1)
+  assert intFromRef(g_first(copied)) == 2
+  assert intFromRef(g_second(copied)) == 1
+  assert intFromRef(n) == 2
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for copyReceiverSnapshot:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures acc(DataPair_unique(ret_1), write)
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+
+
+method copy(this: Ref, par_first: Ref, par_second: Ref)
+  returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+  ensures intFromRef(g_first(ret_2)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_2)) == intFromRef(par_second)
+  ensures acc(DataPair_unique(ret_2), write)
+
+
+method copyReceiverSnapshot() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var pair: Ref
+  var copied: Ref
+  var anon_0: Ref
+  var anon_1: Ref
+  var anon_2: Ref
+  pair := con(intToRef(1), intToRef(2))
+  anon_0 := pair
+  if (true) {
+    pair := con(intToRef(9), intToRef(9))
+    anon_1 := intToRef(3)
+  } else {
+    anon_1 := intToRef(4)}
+  anon_2 := g_first(anon_0)
+  copied := copy(anon_0, anon_2, anon_1)
+  assert intFromRef(g_first(copied)) == 1
+  assert intFromRef(g_second(copied)) == 3
+  assert intFromRef(g_first(pair)) == 9
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: info: Generated Viper text for copyLookalike:
+function g_first(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function g_second(this: Ref): Ref
+  requires isSubtype(typeOf(this), DataPair())
+  ensures isSubtype(typeOf(result), intType())
+
+
+function size(this: Ref): Ref
+  requires isSubtype(typeOf(this), BooleanArray())
+  ensures isSubtype(typeOf(result), intType())
+
+
+method con(par_first: Ref, par_second: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(par_first), intType())
+  requires isSubtype(typeOf(par_second), intType())
+  ensures isSubtype(typeOf(ret_1), DataPair())
+  ensures acc(DataPair_unique(ret_1), write)
+  ensures intFromRef(g_first(ret_1)) == intFromRef(par_first)
+  ensures intFromRef(g_second(ret_1)) == intFromRef(par_second)
+
+
+method copy(this: Ref, tag: Ref) returns (ret_2: Ref)
+  requires isSubtype(typeOf(this), DataPair())
+  requires isSubtype(typeOf(tag), stringType())
+  ensures isSubtype(typeOf(ret_2), DataPair())
+
+
+method copyLookalike() returns (v_ret_0: Ref)
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var pair: Ref
+  var copied: Ref
+  pair := con(intToRef(1), intToRef(2))
+  copied := copy(pair, stringToRef(Seq(116, 97, 103)))
+  assert copied == pair
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/data_classes.kt: error: Formal verification does not support this Kotlin feature: Data-class copy with owned references is unsupported
 
 /data_classes.kt: info: Generated Viper text for destructureWithVarProperty:
 field bf_first: Ref
