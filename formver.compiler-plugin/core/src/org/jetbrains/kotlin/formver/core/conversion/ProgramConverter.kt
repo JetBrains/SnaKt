@@ -612,8 +612,9 @@ class ProgramConverter(
     }
 
     /**
-     * Embeds every direct inheritor of the sealed class [symbol], so the type domain can state that a value of the
-     * sealed type is an instance of one of them.
+     * Embeds the direct inheritors reported by FIR for the sealed class or interface [symbol]. Their completeness
+     * is trusted compiler metadata, including a possibly valid empty list; it is not independently checked here.
+     * The type domain uses this list to require every value of the sealed type to belong to a listed inheritor.
      */
     @OptIn(SymbolInternals::class)
     private fun embedSealedInheritors(symbol: FirRegularClassSymbol) {

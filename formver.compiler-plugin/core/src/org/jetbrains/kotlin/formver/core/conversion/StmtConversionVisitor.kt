@@ -159,10 +159,11 @@ object StmtConversionVisitor : FirVisitor<ExpEmbedding, StmtConversionContext>()
 
     /**
      * The path taken when no branch of [whenExpression] matches. When Kotlin proves the `when` exhaustive but there is
-     * no syntactic `else`, that path is `Unreachable`. It is checked when the subject's embedded type is `Boolean` or
-     * a class, whose cases the branch conditions and the sealed hierarchy axioms cover. Other subjects, such as one
-     * typed by a type parameter with a sealed bound, embed as `Any?`, so the path is trusted. A pure function body can
-     * neither assert nor inhale, so it keeps the `UnitLit` fallthrough.
+     * no syntactic `else`, that path is `Unreachable`. For an impure body, a `Boolean` or class-typed subject selects
+     * an `assert false` proof obligation, not an established coverage result. The verifier must rule out fallthrough
+     * using the branch conditions and available type axioms; insufficient coverage must fail verification.
+     * Other embedded subject types retain the trusted `inhale false` fallback, including type parameters whose
+     * sealed bound is erased to `Any?`. A pure function body can neither assert nor inhale, so it keeps `UnitLit`.
      */
     private fun whenFallthrough(
         whenExpression: FirWhenExpression,

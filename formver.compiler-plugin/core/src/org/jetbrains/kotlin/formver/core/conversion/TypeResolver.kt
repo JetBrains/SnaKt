@@ -94,8 +94,9 @@ class TypeResolver {
     }
 
     /**
-     * Each sealed type paired with its direct inheritors. A hierarchy with an unregistered member is left out,
-     * since an incomplete list of inheritors would make an unsound exhaustiveness claim.
+     * Each sealed type paired with its recorded direct inheritors. A hierarchy is left out if its sealed type or
+     * any recorded inheritor lacks an embedding. This checks registration, not metadata completeness: inheritors
+     * omitted from the compiler-provided list cannot be detected here. An empty list is retained.
      */
     fun sealedHierarchies(): List<Pair<ClassTypeEmbedding, List<ClassTypeEmbedding>>> =
         sealedInheritors.mapNotNull { (sealedType, inheritors) ->
