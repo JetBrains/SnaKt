@@ -13,6 +13,8 @@ import org.jetbrains.kotlin.diagnostics.reportOn
 import org.jetbrains.kotlin.fir.analysis.checkers.context.CheckerContext
 import org.jetbrains.kotlin.formver.common.ErrorStyle
 import org.jetbrains.kotlin.formver.plugin.compiler.PluginErrors
+import org.jetbrains.kotlin.formver.plugin.compiler.VerificationErrors
+import org.jetbrains.kotlin.formver.viper.errors.AbortedError
 import org.jetbrains.kotlin.formver.viper.errors.ConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -31,14 +33,19 @@ private fun DiagnosticReporter.reportVerificationError(
 ) = error.formatByErrorStyle(errorStyle).forEach { it.report(source) }
 
 context(context: CheckerContext)
-private fun DiagnosticReporter.reportConsistencyError(source: KtSourceElement?, error: ConsistencyError) {
-    val sourceIsFunctionDeclaration = source?.elementType?.let { it == KtNodeTypes.FUN } ?: false
-    val positionStrategy = when (sourceIsFunctionDeclaration) {
+private val KtSourceElement?.positionStrategy
+    get() = when (this?.elementType == KtNodeTypes.FUN) {
         true -> SourceElementPositioningStrategies.DECLARATION_NAME
         false -> SourceElementPositioningStrategies.DEFAULT
     }
-    reportOn(source, PluginErrors.INTERNAL_ERROR, error.msg, positioningStrategy = positionStrategy)
-}
+
+context(context: CheckerContext)
+private fun DiagnosticReporter.reportConsistencyError(source: KtSourceElement?, error: ConsistencyError) =
+    reportOn(source, PluginErrors.INTERNAL_ERROR, error.msg, positioningStrategy = source.positionStrategy)
+
+context(context: CheckerContext)
+private fun DiagnosticReporter.reportAbortedError(source: KtSourceElement?, error: AbortedError) =
+    reportOn(source, VerificationErrors.VIPER_VERIFICATION_ABORTED, error.msg, positioningStrategy = source.positionStrategy)
 
 context(context: CheckerContext)
 fun DiagnosticReporter.reportVerifierError(
@@ -48,4 +55,5 @@ fun DiagnosticReporter.reportVerifierError(
 ) = when (error) {
     is ConsistencyError -> reportConsistencyError(source, error)
     is VerificationError -> reportVerificationError(source, error, errorStyle)
+    is AbortedError -> reportAbortedError(source, error)
 }

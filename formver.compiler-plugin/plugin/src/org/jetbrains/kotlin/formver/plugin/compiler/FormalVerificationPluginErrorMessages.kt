@@ -34,6 +34,11 @@ object FormalVerificationPluginErrorMessages : BaseDiagnosticRendererFactory() {
             CommonRenderers.STRING,
         )
         map.put(
+            VerificationErrors.VIPER_VERIFICATION_ABORTED,
+            "Viper verification aborted: {0}",
+            CommonRenderers.STRING,
+        )
+        map.put(
             PluginErrors.INTERNAL_ERROR,
             "An internal error has occurred.\nDetails: {0}\nPlease report this at https://github.com/jesyspa/kotlin",
             CommonRenderers.STRING,

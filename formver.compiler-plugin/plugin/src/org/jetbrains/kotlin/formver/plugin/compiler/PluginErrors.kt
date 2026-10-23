@@ -37,6 +37,7 @@ object VerificationErrors : KtDiagnosticsContainer() {
     val UNEXPECTED_RETURNED_VALUE by warning1<PsiElement, String>()
     val INVALID_SUBLIST_RANGE by warning2<PsiElement, String, String>()
     val CONSISTENCY by error1<PsiElement, String>()
+    val VIPER_VERIFICATION_ABORTED by error1<PsiElement, String>()
     override fun getRendererFactory() = FormalVerificationPluginErrorMessages
     fun tags() = listOf(
         CONDITIONAL_EFFECT_ERROR.name,
@@ -44,6 +45,7 @@ object VerificationErrors : KtDiagnosticsContainer() {
         POSSIBLE_INDEX_OUT_OF_BOUND.name,
         UNEXPECTED_RETURNED_VALUE.name,
         INVALID_SUBLIST_RANGE.name,
-        CONSISTENCY.name
+        CONSISTENCY.name,
+        VIPER_VERIFICATION_ABORTED.name
     )
 }

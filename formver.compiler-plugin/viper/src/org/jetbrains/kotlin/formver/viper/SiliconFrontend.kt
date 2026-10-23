@@ -1,5 +1,6 @@
 package org.jetbrains.kotlin.formver.viper
 
+import org.jetbrains.kotlin.formver.viper.errors.AbortedError
 import org.jetbrains.kotlin.formver.viper.errors.GenericConsistencyError
 import org.jetbrains.kotlin.formver.viper.errors.VerificationError
 import org.jetbrains.kotlin.formver.viper.errors.VerifierError
@@ -39,22 +40,41 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
         }
     }
 
-    /** Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found. */
+    /**
+     * Consistency-checks and verifies [viperProgram], calling [onFailure] for each error found.
+     * A program that fails the consistency check is not passed to Silicon.
+     */
     fun verify(viperProgram: viper.silver.ast.Program, onFailure: (VerifierError) -> Unit) {
-        val result = siliconApi.verify(viperProgram)
-        if (result is viper.silver.verifier.Failure) {
-            for (error in result.errors()) {
-                when (error) {
-                    is viper.silver.verifier.VerificationError ->
-                        onFailure(VerificationError(error))
-                    is viper.silver.verifier.ConsistencyError ->
-                        onFailure(GenericConsistencyError(error))
-                }
-            }
-        }
+        verifyConsistentProgram(viperProgram, siliconApi::verify, onFailure)
     }
 
     override fun close() {
         siliconApi.stop()
+    }
+}
+
+/** Rejects malformed ASTs before invoking the backend, which skips this check for AST input. */
+internal fun verifyConsistentProgram(
+    program: viper.silver.ast.Program,
+    verifyBackend: (viper.silver.ast.Program) -> viper.silver.verifier.VerificationResult,
+    onFailure: (VerifierError) -> Unit,
+) {
+    val consistencyErrors = program.checkTransitively()
+    if (!consistencyErrors.isEmpty) {
+        for (error in consistencyErrors) onFailure(AbortedError(error))
+        return
+    }
+    reportFailures(verifyBackend(program), onFailure)
+}
+
+/** Retains every backend failure, including errors that do not describe a proof counterexample. */
+internal fun reportFailures(result: viper.silver.verifier.VerificationResult, onFailure: (VerifierError) -> Unit) {
+    if (result !is viper.silver.verifier.Failure) return
+    for (error in result.errors()) {
+        when (error) {
+            is viper.silver.verifier.VerificationError -> onFailure(VerificationError(error))
+            is viper.silver.verifier.ConsistencyError -> onFailure(GenericConsistencyError(error))
+            else -> onFailure(AbortedError(error))
+        }
     }
 }
