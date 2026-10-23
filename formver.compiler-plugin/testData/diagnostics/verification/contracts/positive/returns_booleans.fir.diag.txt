@@ -88,8 +88,10 @@ field size: Ref
 method isEmpty(v_this: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(v_this), Collection())
   requires acc(v_this.size, write)
+  requires isSubtype(typeOf(v_this.size), intType())
   requires intFromRef(v_this.size) >= 0
   ensures acc(v_this.size, write)
+  ensures isSubtype(typeOf(v_this.size), intType())
   ensures intFromRef(v_this.size) >= 0
   ensures isSubtype(typeOf(ret_2), boolType())
   ensures intFromRef(v_this.size) == old(intFromRef(v_this.size))
@@ -102,9 +104,13 @@ method isNullOrEmpty(v_this_extension: Ref) returns (v_ret_0: Ref)
   requires v_this_extension != nullValue() ==>
     acc(v_this_extension.size, write)
   requires v_this_extension != nullValue() ==>
+    isSubtype(typeOf(v_this_extension.size), intType())
+  requires v_this_extension != nullValue() ==>
     intFromRef(v_this_extension.size) >= 0
   ensures v_this_extension != nullValue() ==>
     acc(v_this_extension.size, write)
+  ensures v_this_extension != nullValue() ==>
+    isSubtype(typeOf(v_this_extension.size), intType())
   ensures v_this_extension != nullValue() ==>
     intFromRef(v_this_extension.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), boolType())

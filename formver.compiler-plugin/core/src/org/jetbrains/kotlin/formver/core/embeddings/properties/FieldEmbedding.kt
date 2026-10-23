@@ -12,6 +12,8 @@ import org.jetbrains.kotlin.formver.core.embeddings.types.ClassTypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.FieldAccessTypeInvariantEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeEmbedding
 import org.jetbrains.kotlin.formver.core.embeddings.types.TypeInvariantEmbedding
+import org.jetbrains.kotlin.formver.core.embeddings.expression.FieldAccess
+import org.jetbrains.kotlin.formver.core.embeddings.expression.ExpEmbedding
 import org.jetbrains.kotlin.formver.core.names.ScopedName
 import org.jetbrains.kotlin.formver.viper.SymbolicName
 import org.jetbrains.kotlin.formver.viper.ast.Field
@@ -44,7 +46,13 @@ interface FieldEmbedding {
 
     fun accessInvariantsForParameter(): List<TypeInvariantEmbedding> =
         when (accessPolicy) {
-            AccessPolicy.ALWAYS_WRITEABLE -> listOf(FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()))
+            AccessPolicy.ALWAYS_WRITEABLE -> listOf(
+                FieldAccessTypeInvariantEmbedding(this, PermExp.FullPerm()),
+                object : TypeInvariantEmbedding {
+                    override fun fillHole(exp: ExpEmbedding): ExpEmbedding =
+                        type.subTypeInvariant().fillHole(FieldAccess(exp, this@FieldEmbedding))
+                },
+            )
             AccessPolicy.BY_RECEIVER_UNIQUENESS, AccessPolicy.MANUAL -> listOf()
         } + extraAccessInvariantsForParameter()
 

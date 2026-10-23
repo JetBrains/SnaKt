@@ -2,7 +2,6 @@
 // WITH_STDLIB
 
 import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
-import org.jetbrains.kotlin.formver.plugin.loopInvariants
 import org.jetbrains.kotlin.formver.plugin.postconditions
 import org.jetbrains.kotlin.formver.plugin.preconditions
 
@@ -21,3 +20,11 @@ fun <!VIPER_TEXT!>size_in_precondition<!>(l: List<Int>): Int {
     }
     return l[0]
 }
+
+<!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
+fun <!VIPER_TEXT!>size_in_false_postcondition<!>(l: List<Int>): Int {
+    postconditions<Int> { res ->
+        res != l.size
+    }
+    return l.size
+}<!>

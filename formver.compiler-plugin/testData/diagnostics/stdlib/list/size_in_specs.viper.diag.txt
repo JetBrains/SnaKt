@@ -1,0 +1,1 @@
+/size_in_specs.kt: warning: Viper verification error: Postcondition of size_in_false_postcondition might not hold. Assertion !(intFromRef(v_ret_0) == intFromRef(l.size)) might not hold.

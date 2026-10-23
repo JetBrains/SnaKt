@@ -4,14 +4,15 @@ field size: Ref
 method size_in_postcondition(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
   requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
   requires intFromRef(l.size) >= 0
   ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures intFromRef(v_ret_0) == intFromRef(l.size)
 {
   v_ret_0 := l.size
-  inhale isSubtype(typeOf(v_ret_0), intType())
   goto lbl_ret_0
   label lbl_ret_0
 }
@@ -22,11 +23,13 @@ field size: Ref
 method get(this: Ref, index: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(this), List())
   requires acc(this.size, write)
+  requires isSubtype(typeOf(this.size), intType())
   requires intFromRef(this.size) >= 0
   requires isSubtype(typeOf(index), intType())
   requires intFromRef(index) >= 0
   requires intFromRef(this.size) > intFromRef(index)
   ensures acc(this.size, write)
+  ensures isSubtype(typeOf(this.size), intType())
   ensures intFromRef(this.size) >= 0
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(this.size) == old(intFromRef(this.size))
@@ -35,13 +38,34 @@ method get(this: Ref, index: Ref) returns (ret_2: Ref)
 method size_in_precondition(l: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(l), List())
   requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
   requires intFromRef(l.size) >= 0
   requires intFromRef(l.size) > 0
   ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
   ensures intFromRef(l.size) >= 0
   ensures isSubtype(typeOf(v_ret_0), intType())
 {
   v_ret_0 := get(l, intToRef(0))
+  goto lbl_ret_0
+  label lbl_ret_0
+}
+
+/size_in_specs.kt: info: Generated Viper text for size_in_false_postcondition:
+field size: Ref
+
+method size_in_false_postcondition(l: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(l), List())
+  requires acc(l.size, write)
+  requires isSubtype(typeOf(l.size), intType())
+  requires intFromRef(l.size) >= 0
+  ensures acc(l.size, write)
+  ensures isSubtype(typeOf(l.size), intType())
+  ensures intFromRef(l.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), intType())
+  ensures !(intFromRef(v_ret_0) == intFromRef(l.size))
+{
+  v_ret_0 := l.size
   goto lbl_ret_0
   label lbl_ret_0
 }
