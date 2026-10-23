@@ -141,7 +141,3 @@ method prop(this: Ref) returns (ret_1: Ref)
   requires isSubtype(typeOf(this), anyType())
   ensures isSubtype(typeOf(ret_1), nullable(anyType()))
 
-
-/non_null_assertion.kt: error: Impure function body detected in pure function
-
-/non_null_assertion.kt: error: Function 'nonNullAssertionInPureFunctionMightFail' was not verified because of errors in its declaration

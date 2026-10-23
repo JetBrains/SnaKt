@@ -1,6 +1,6 @@
 // FULL_JDK
 
-import org.jetbrains.kotlin.formver.plugin.Pure
+import org.jetbrains.kotlin.formver.plugin.AlwaysVerify
 
 class PrimitiveProperty {
     var aProp: Int = 0
@@ -14,8 +14,7 @@ class Box(val field: Int) {
     fun <!VIPER_TEXT!>method<!>(): Int = 2
 }
 
-// Each non-null assertion below is applied to an unconstrained nullable parameter,
-// so the generated `assert ... != null` cannot be discharged.
+// Unconstrained nullable operands do not discharge the generated non-null assertion.
 fun <!VIPER_TEXT!>nonNullAssertionReceiverMightFail<!>(property: PrimitiveProperty?) {
     <!VIPER_VERIFICATION_ERROR!>property!!<!>.aProp = 1
 }
@@ -36,8 +35,14 @@ fun <!VIPER_TEXT!>nonNullAssertionFieldReceiverMightFail<!>(b: Box?): Int {
     return <!VIPER_VERIFICATION_ERROR!>b!!<!>.field
 }
 
-// A non-null assertion converts to an assert, which pure function bodies do not allow.
-<!PURITY_VIOLATION!>@Pure
-fun <!VERIFICATION_SKIPPED!>nonNullAssertionInPureFunctionMightFail<!>(x: Int?): Int {
-    return x!! + 1
-}<!>
+inline fun nullableOperand(block: () -> Box?): Box? = block()
+
+// Effects must not let an unconstrained nullable result bypass the null check.
+@AlwaysVerify
+fun nonNullAssertionEffectfulOperandMightFail(b: Box?): Int {
+    var calls = 0
+    return <!VIPER_VERIFICATION_ERROR!>nullableOperand {
+        calls += 1
+        b
+    }!!<!>.field
+}
