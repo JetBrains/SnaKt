@@ -14,9 +14,12 @@ class SiliconFrontend(commandLineArgs: List<String>) : Closeable {
     private val siliconApi: viper.silicon.SiliconFrontendAPI
 
     init {
-        checkProverIsUsable(commandLineArgs)
         val args = buildList {
             addAll(commandLineArgs)
+            resolveZ3Executable(commandLineArgs)?.let {
+                add("--z3Exe")
+                add(it)
+            }
             System.getenv("SILICON_PARALLEL_VERIFIERS")?.let {
                 add("--numberOfParallelVerifiers")
                 add(it)
