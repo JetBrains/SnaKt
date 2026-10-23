@@ -53,7 +53,7 @@ fun <!VIPER_TEXT!>branchResult<!>(chooseFirst: Boolean): Int {
     return if (chooseFirst) 1 else 2
 }
 
-// Negative mutation: swapping branch results violates both postcondition implications.
+// Negative mutation: each branch violates its applicable postcondition implication.
 <!VIPER_VERIFICATION_ERROR!>@AlwaysVerify
 fun <!VIPER_TEXT!>swappedBranchResult<!>(chooseFirst: Boolean): Int {
     postconditions<Int> { result ->

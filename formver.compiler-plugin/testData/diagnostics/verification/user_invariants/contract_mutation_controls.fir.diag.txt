@@ -1,6 +1,7 @@
 /contract_mutation_controls.kt: info: Generated Viper text for strictSuccessor:
 method strictSuccessor(base: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures intFromRef(base) >= 0 ==> intFromRef(v_ret_0) > intFromRef(base)
 {
@@ -12,6 +13,7 @@ method strictSuccessor(base: Ref) returns (v_ret_0: Ref)
 /contract_mutation_controls.kt: info: Generated Viper text for nonStrictSuccessor:
 method nonStrictSuccessor(base: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(v_ret_0), intType())
   ensures intFromRef(base) >= 0 ==> intFromRef(v_ret_0) >= intFromRef(base)
 {
@@ -28,7 +30,7 @@ function size(this: Ref): Ref
 
 method strictPostconditionPropagates(base: Ref) returns (v_ret_0: Ref)
   requires isSubtype(typeOf(base), intType())
-  requires intFromRef(base) >= 0
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var l0_result: Ref
@@ -40,6 +42,7 @@ method strictPostconditionPropagates(base: Ref) returns (v_ret_0: Ref)
 
 method strictSuccessor(base: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(base) >= 0 ==> intFromRef(ret_2) > intFromRef(base)
 
@@ -53,7 +56,7 @@ function size(this: Ref): Ref
 method nonStrictPostconditionDoesNotProveStrictResult(base: Ref)
   returns (v_ret_0: Ref)
   requires isSubtype(typeOf(base), intType())
-  requires intFromRef(base) >= 0
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(v_ret_0), unitType())
 {
   var l0_result: Ref
@@ -65,5 +68,6 @@ method nonStrictPostconditionDoesNotProveStrictResult(base: Ref)
 
 method nonStrictSuccessor(base: Ref) returns (ret_2: Ref)
   requires isSubtype(typeOf(base), intType())
+  requires intFromRef(base) >= 0 && intFromRef(base) <= 100
   ensures isSubtype(typeOf(ret_2), intType())
   ensures intFromRef(base) >= 0 ==> intFromRef(ret_2) >= intFromRef(base)
