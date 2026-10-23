@@ -54,10 +54,9 @@ data object MutableListInterface : PresentInterface {
 }
 
 /**
- * Top-level functions of the collections package whose extension receiver is a `List`.
- *
- * Restricting to the collections package keeps user-defined extensions with the same name
- * from picking up the standard library contract.
+ * Functions declared in `kotlin.collections` outside class scope, with an extension receiver
+ * whose declared type is `List` or a subtype. The class-scope check is separate from the
+ * extension-receiver check; this does not inspect runtime receiver types or declaration identity.
  */
 data object ListExtensionInterface : StdLibReceiverInterface {
     override fun match(function: NamedFunctionSignature, ctx: TypeResolver): Boolean {
