@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbedd
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.LeIntInt
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.Not
 import org.jetbrains.kotlin.formver.core.embeddings.expression.OperatorExpEmbeddings.SubIntInt
+import org.jetbrains.kotlin.formver.core.embeddings.types.IntTypeEmbedding
 import org.jetbrains.kotlin.formver.core.names.NameMatcher
 
 private fun VariableEmbedding.sameSize(): ExpEmbedding =
@@ -264,19 +265,27 @@ data object EmptyArrayPostcondition : StdLibPostcondition {
     override fun match(function: NamedFunctionSignature) = function.isNamed("emptyArray")
 }
 
-/** Every native array constructor takes the size as its first parameter. */
+/**
+ * A normal-return size summary for size-first constructors, not an allocation-safety check.
+ * Initializer execution and effects remain unsupported independently of this summary.
+ */
 data object NativeArrayConstructorPostcondition : StdLibPostcondition {
     override fun getEmbeddings(
         returnVariable: VariableEmbedding,
         function: NamedFunctionSignature
     ): List<ExpEmbedding> {
         return listOf(
-            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), function.formalArgs[0])
+            EqCmp(FieldAccess(returnVariable, CollectionSizeFieldEmbedding), function.params[0])
         )
     }
 
     override val stdLibInterface = NativeArrayInterface
-    override fun match(function: NamedFunctionSignature) = function.isConstructor()
+    override fun match(function: NamedFunctionSignature): Boolean {
+        if (!function.isConstructor() || function.dispatchReceiver != null || function.extensionReceiver != null) return false
+        val sizeType = function.params.firstOrNull()?.type ?: return false
+        // Class membership alone is insufficient: unsigned arrays also have storage constructors.
+        return sizeType.pretype == IntTypeEmbedding && !sizeType.isNullable
+    }
 }
 
 data object SubListPostcondition : StdLibPostcondition {
