@@ -147,7 +147,7 @@ private fun NamedFunctionSignature.nonEmptyExtensionReceiverPrecondition(): List
         GtIntInt(
             FieldAccess(extensionReceiver!!, CollectionSizeFieldEmbedding),
             IntLit(0),
-            SourceRole.ListElementAccessCheck(SourceRole.ListElementAccessCheck.AccessCheckType.GREATER_THAN_LIST_SIZE),
+            SourceRole.EmptyListAccessCheck,
         )
     )
 
