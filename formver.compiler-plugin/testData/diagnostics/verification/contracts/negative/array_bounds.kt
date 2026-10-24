@@ -14,3 +14,13 @@ fun <!VIPER_TEXT!>uncheckedPrimitiveArrayRead<!>(array: IntArray): Int =
 @AlwaysVerify
 fun <!VIPER_TEXT!>negativePrimitiveArrayRead<!>(array: IntArray): Int =
     <!POSSIBLE_INDEX_OUT_OF_BOUND!>array[-1]<!>
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>uncheckedPrimitiveArrayWrite<!>(array: IntArray) {
+    <!POSSIBLE_INDEX_OUT_OF_BOUND!>array[0] = 1<!>
+}
+
+@AlwaysVerify
+fun <!VIPER_TEXT!>negativeGenericArrayWrite<!>(array: Array<Int>) {
+    <!POSSIBLE_INDEX_OUT_OF_BOUND!>array[-1] = 1<!>
+}

@@ -84,3 +84,64 @@ method negativePrimitiveArrayRead(array: Ref) returns (v_ret_0: Ref)
   goto lbl_ret_0
   label lbl_ret_0
 }
+
+/array_bounds.kt: info: Generated Viper text for uncheckedPrimitiveArrayWrite:
+field size: Ref
+
+method set(this: Ref, index: Ref, value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), IntArray())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), unitType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
+
+
+method uncheckedPrimitiveArrayWrite(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), IntArray())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(array, intToRef(0), intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+/array_bounds.kt: info: Generated Viper text for negativeGenericArrayWrite:
+field size: Ref
+
+method negativeGenericArrayWrite(array: Ref) returns (v_ret_0: Ref)
+  requires isSubtype(typeOf(array), Array())
+  requires acc(array.size, write)
+  requires intFromRef(array.size) >= 0
+  ensures acc(array.size, write)
+  ensures intFromRef(array.size) >= 0
+  ensures isSubtype(typeOf(v_ret_0), unitType())
+{
+  var anon: Ref
+  anon := set(array, intToRef(-1), intToRef(1))
+  label lbl_ret_0
+  inhale isSubtype(typeOf(v_ret_0), unitType())
+}
+
+method set(this: Ref, index: Ref, value: Ref) returns (ret_1: Ref)
+  requires isSubtype(typeOf(this), Array())
+  requires acc(this.size, write)
+  requires intFromRef(this.size) >= 0
+  requires isSubtype(typeOf(index), intType())
+  requires isSubtype(typeOf(value), intType())
+  requires intFromRef(index) >= 0
+  requires intFromRef(this.size) > intFromRef(index)
+  ensures acc(this.size, write)
+  ensures intFromRef(this.size) >= 0
+  ensures isSubtype(typeOf(ret_1), unitType())
+  ensures intFromRef(this.size) == old(intFromRef(this.size))
