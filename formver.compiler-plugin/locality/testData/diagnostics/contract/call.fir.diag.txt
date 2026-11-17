@@ -9,3 +9,17 @@
 /call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
 
 /call.kt: error: Receiver locality contract mismatch: expected '[local]', actual '[global]'.
+
+/call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.
+
+/call.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/call.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

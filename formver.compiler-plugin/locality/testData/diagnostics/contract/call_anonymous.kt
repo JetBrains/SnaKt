@@ -115,3 +115,24 @@ fun `explicitly invoke local higher-order function argument with global nested f
 ) {
     f.invoke(<!LOCALITY_CONTRACT_MISMATCH!>fun(g: (Any) -> Unit) { g(Any()) }<!>)
 }
+
+fun `pass global function with global argument as local function with local argument`(
+    f: (@Borrowed (@Borrowed Any) -> Unit) -> Unit,
+    g: (Any) -> Unit
+) {
+    f(<!LOCALITY_CONTRACT_MISMATCH!>g<!>)
+}
+
+fun `pass local lambda with local argument as local function with local argument`(
+    f: (@Borrowed (@Borrowed Any) -> Unit) -> Unit,
+    x: @Borrowed Any
+) {
+    f { y: @Borrowed Any -> val z: @Borrowed Any = x }
+}
+
+fun `pass local function with local argument as global function with local argument`(
+    f: ((@Borrowed Any) -> Unit) -> Unit,
+    g: @Borrowed (@Borrowed Any) -> Unit
+) {
+    f(<!LOCALITY_MISMATCH!>g<!>)
+}

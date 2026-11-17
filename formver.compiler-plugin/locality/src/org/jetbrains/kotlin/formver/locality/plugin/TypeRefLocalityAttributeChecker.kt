@@ -15,8 +15,16 @@ import org.jetbrains.kotlin.fir.declarations.FirReceiverParameter
 import org.jetbrains.kotlin.fir.declarations.FirValueParameter
 import org.jetbrains.kotlin.fir.declarations.isLocal
 import org.jetbrains.kotlin.fir.types.FirFunctionTypeRef
+import org.jetbrains.kotlin.fir.types.FirResolvedTypeRef
+import org.jetbrains.kotlin.fir.types.FirTypeRef
 import org.jetbrains.kotlin.formver.type.plugin.AttributeTargetJudgment
 import org.jetbrains.kotlin.formver.type.plugin.TypeRefAttributeChecker
+
+private fun FirTypeRef.removeResolved(): FirTypeRef =
+    when (this) {
+        is FirResolvedTypeRef -> delegatedTypeRef?.removeResolved() ?: this
+        else -> this
+    }
 
 private object LocalityAttributeTargetJudgment : AttributeTargetJudgment {
     private fun isValidLocalityContractTarget(parents: List<FirElement>): Boolean {
@@ -24,15 +32,13 @@ private object LocalityAttributeTargetJudgment : AttributeTargetJudgment {
         val containerElement = parents.getOrNull(1) ?: return false
 
         return when (containerElement) {
-            is FirFunctionTypeRef ->
-                currentElement == containerElement.receiverTypeRef
-                        || currentElement in containerElement.contextParameterTypeRefs
-
-            is FirFunctionTypeParameter -> {
-                val functionTypeRef = parents.getOrNull(2) as? FirFunctionTypeRef?
+            is FirFunctionTypeParameter -> true
+            is FirTypeRef -> {
+                val functionTypeRef = containerElement.removeResolved() as? FirFunctionTypeRef
                     ?: return false
 
-                containerElement in functionTypeRef.parameters
+                currentElement == functionTypeRef.receiverTypeRef
+                        || currentElement in functionTypeRef.contextParameterTypeRefs
             }
             else -> false
         }
