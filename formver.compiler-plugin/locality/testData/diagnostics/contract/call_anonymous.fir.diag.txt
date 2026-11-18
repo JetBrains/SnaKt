@@ -13,3 +13,7 @@
 /call_anonymous.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
 
 /call_anonymous.kt: error: Argument locality contract mismatch: expected '[(global, [local])]', actual '[(global, [global])]'.
+
+/call_anonymous.kt: error: Argument locality contract mismatch: expected '[local]', actual '[global]'.
+
+/call_anonymous.kt: error: Argument locality mismatch: expected 'global', actual 'local'.

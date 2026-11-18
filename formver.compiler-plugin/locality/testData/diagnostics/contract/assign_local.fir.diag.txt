@@ -7,3 +7,7 @@
 /assign_local.kt: error: Initializer locality contract mismatch: expected '[local]', actual '[global]'.
 
 /assign_local.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.
+
+/assign_local.kt: error: Assignment locality contract mismatch: expected '[local]', actual '[global]'.
+
+/assign_local.kt: error: Assignment locality mismatch: expected 'global', actual 'local'.

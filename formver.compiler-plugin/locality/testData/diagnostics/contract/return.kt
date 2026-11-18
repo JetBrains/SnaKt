@@ -35,3 +35,8 @@ fun `return global function producer as local function producer`(): () -> ((@Bor
 
 fun `return local function producer as global function producer`(): () -> ((Any) -> Unit) =
     localFunctionProducer()
+
+fun `return local function with local argument as global function with local argument`(
+    f: @Borrowed (@Borrowed Any) -> Unit
+): (@Borrowed Any) -> Unit =
+    <!LOCALITY_MISMATCH!>f<!>
